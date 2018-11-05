@@ -150,9 +150,10 @@
 <img src="Namaaz_banner.jpg" height= "200px" width="100%">
 
 <div div id="myDIV">
-<marquee behavior="alternate" scrollamount="10"><p><label><b><font  font-family:"Tahoma">Assalam-o-alaikum, Welcome to my site..<br />Please find below Namaaz Timetabe,Jazakallah Khairan</font></b></label></p></marquee>
-
+	<marquee behavior="alternate" scrollamount="10"><p><label><b><font  font-family:"Tahoma">Assalam-o-alaikum, Welcome to my site..<br />Please find below Namaaz Timetabe,Jazakallah Khairan</font></b></label></p></marquee>
 </div>
+	
+	<hr>
 
 
     <div class="wrapper">
@@ -425,7 +426,8 @@
                     document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i+1].Fazar;
                 }
                 
-                
+                setInterval('window.location.reload()', 60000*1);
+
                 var today_date =data[i].Date;
 
                 var x = setInterval(function() {
