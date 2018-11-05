@@ -2,555 +2,555 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<script type="text/javascript" src="timeTable.json"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<style>
-		p {
-		  text-align: center;
-		  font-size: 40px;
-		}
-		.div1{
-		 text-align: left;
-		 }
-		. div2{
-		 text-align: right;
-		 }
-		 table {
-			font-family: arial, sans-serif;
-			border-collapse: collapse;
-			width: 100%;
-		}
+    <script type="text/javascript" src="timeTable.json"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <style>
+        p {
+          text-align: center;
+          font-size: 40px;
+        }
+        .div1{
+         text-align: left;
+         }
+        . div2{
+         text-align: right;
+         }
+         table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-		td, th {
-			border: 1px solid black;
-			text-align: left;
-			padding: 8px;
-		}
-		
-	/* 
-	.topleft {
-		position: absolute;
-		top: 320px;
-		left: 16px;
-		font-size: 18px;
-		}
-		.topright {
-		position: absolute;
-		top: 320px;
-		right: 16px;
-		font-size: 18px;
-		}
+        td, th {
+            border: 1px solid black;
+            text-align: left;
+            padding: 8px;
+        }
+        
+    /* 
+    .topleft {
+        position: absolute;
+        top: 320px;
+        left: 16px;
+        font-size: 18px;
+        }
+        .topright {
+        position: absolute;
+        top: 320px;
+        right: 16px;
+        font-size: 18px;
+        }
  */
-	.picleft{
-		color: white;
-		font-size: 30px;
-		}
-		tr:nth-child(even) {
-			background-color: #dddddd;
-		}
-				
-		.row-even {
-			color: black;
-		}
-		
-		.row-odd {
-			color: white;
-		}
-		.row-selected  {
-			background-color: #333 !important;
-			color: yellow;    
-		}
-		body{
-		text-align: center;
-		font-family: sans-serif;
-		font-weight: 100;
-		}
+    .picleft{
+        color: white;
+        font-size: 30px;
+        }
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+                
+        .row-even {
+            color: black;
+        }
+        
+        .row-odd {
+            color: white;
+        }
+        .row-selected  {
+            background-color: #333 !important;
+            color: yellow;    
+        }
+        body{
+        text-align: center;
+        font-family: sans-serif;
+        font-weight: 100;
+        }
 
-		h1{
-		  color: #396;
-		  font-weight: 100;
-		  font-size: 40px;
-		  margin: 40px 0px 20px;
-		}
+        h1{
+          color: #396;
+          font-weight: 100;
+          font-size: 40px;
+          margin: 40px 0px 20px;
+        }
 
-		#clockdiv{
-			font-family: sans-serif;
-			color: #fff;
-			display: inline-block;
-			font-weight: 100;
-			text-align: center;
-			font-size: 30px;
-		}
+        #clockdiv{
+            font-family: sans-serif;
+            color: #fff;
+            display: inline-block;
+            font-weight: 100;
+            text-align: center;
+            font-size: 30px;
+        }
 
-		#clockdiv > div{
-			padding: 10px;
-			border-radius: 3px;
-			background: #337DFF;
-			display: inline-block;
-		}
+        #clockdiv > div{
+            padding: 10px;
+            border-radius: 3px;
+            background: #337DFF;
+            display: inline-block;
+        }
 
-		#clockdiv div > span{
-			padding: 15px;
-			border-radius: 3px;
-			background: #3498DB;
-			display: inline-block;
-		}
+        #clockdiv div > span{
+            padding: 15px;
+            border-radius: 3px;
+            background: #3498DB;
+            display: inline-block;
+        }
 
-		#clockdiv2{
-			font-family: sans-serif;
-			color: #fff;
-			display: inline-block;
-			font-weight: 100;
-			text-align: center;
-			font-size: 30px;
-		}
+        #clockdiv2{
+            font-family: sans-serif;
+            color: #fff;
+            display: inline-block;
+            font-weight: 100;
+            text-align: center;
+            font-size: 30px;
+        }
 
-		#clockdiv2 > div{
-			padding: 10px;
-			border-radius: 3px;
-			background: #337DFF;
-			display: inline-block;
-		}
+        #clockdiv2 > div{
+            padding: 10px;
+            border-radius: 3px;
+            background: #337DFF;
+            display: inline-block;
+        }
 
-		#clockdiv2 div > span{
-			padding: 15px;
-			border-radius: 3px;
-			background: #3498DB;
-			display: inline-block;
-		}
-		.smalltext{
-			padding-top: 5px;
-			font-size: 16px;
-		}
-	label {
-		cursor: default;
-		
-	}
+        #clockdiv2 div > span{
+            padding: 15px;
+            border-radius: 3px;
+            background: #3498DB;
+            display: inline-block;
+        }
+        .smalltext{
+            padding-top: 5px;
+            font-size: 16px;
+        }
+    label {
+        cursor: default;
+        
+    }
 
-		</style>
+        </style>
 </head>
 <body background="ramadan.jpg" height= "100%" width="100%" link="#FFFF00" vlink="#808080" alink="#FF0000">
 <img src="Namaaz_banner.jpg" height= "200px" width="100%">
 
-	<div class="wrapper">
-		<div class="centre">
-		<div id="expired"><p><label>Expired</label></p></div>
+    <div class="wrapper">
+        <div class="centre">
+        <div id="expired"><p><label>Expired</label></p></div>
 
-		<div id="clockdiv">
-			  <div>
-				<span class="hours"></span>
-				<div class="smalltext">Hours</div>
-			  </div>
-			  
-			  <div>
-				<span class="minutes"></span>
-				<div class="smalltext">Minutes</div>
-			  </div>
-			  
-			  <div>
-				<span class="seconds"></span>
-				<div class="smalltext">Seconds</div>
-			  </div>
-			  
-			  <div>
-				<span class="msec"></span>
-				<div class="smalltext">MiliSecond</div>
-			  </div>
-		</div>
-	<p><label><b><u>Time Remaining for Next Namaaz  :</u></b> </label></p>
-	</div>
-		<div class="topleft"> 
-		<b><p id ="today"> </p></b>
-		<b><p id ="next_namaaz">  Next Namaaz :</p> </b>
-		<b><p id ="next_namaaz_time">Next Namaaz Time: </p></b>
+        <div id="clockdiv">
+              <div>
+                <span class="hours"></span>
+                <div class="smalltext">Hours</div>
+              </div>
+              
+              <div>
+                <span class="minutes"></span>
+                <div class="smalltext">Minutes</div>
+              </div>
+              
+              <div>
+                <span class="seconds"></span>
+                <div class="smalltext">Seconds</div>
+              </div>
+              
+              <div>
+                <span class="msec"></span>
+                <div class="smalltext">MiliSecond</div>
+              </div>
+        </div>
+    <p><label><b><u>Time Remaining for Next Namaaz  :</u></b> </label></p>
+    </div>
+        <div class="topleft"> 
+        <b><p id ="today"> </p></b>
+        <b><p id ="next_namaaz">  Next Namaaz :</p> </b>
+        <b><p id ="next_namaaz_time">Next Namaaz Time: </p></b>
 
-	</div>
-	
-	<hr>
-		<p><label><b><u>Today's Weather Details:</u></b> </label></p>
-		<!-- weather widget start --><a target="_blank" href="http://www.booked.net/weather/bhubaneswar-26830"><img src="https://w.bookcdn.com/weather/picture/3_26830_1_1_159ee8_430_ffffff_333333_08488D_1_ffffff_333333_0_6.png?scode=124&domid=w209&anc_id=22382"  alt="booked.net"/></a><!-- weather widget end -->
-	<hr>
-
-	<font size="10"><b><u>Hadith of the Day</u></b>	</font>	
-	<div id="picleft">	
-		<p></p> 
-		<div id="hadith"></div>
-		<p></p>
-		<font size="5">For more hadith ,Please Click <a href="https://questionsonislam.com/article/hadiths-about-prayer"><font color="FF0000">here</font></a></font>
-	</div>
-	<hr>	
-	<font size="10"><b><u>Pic of the Day</u> </b></font>	
-	<div id="hadeesRight"></div>
-	 <div class="pic-hadith" >  </div>	
-	<hr>	
-	<script>
-		var text = '[' +		
-		 '{ "Sl_No" : "1",  "Date": "Nov 1, 2018" ,		"Day": "Thursday", 	  		"Fazar": "4:33",  "Sunrise": "5:48", 	"Zohar": "11:31",	"Asar": "15:36" ,	"Sunset":"17:11", 	"Magrib": "17:16" ,		"Isha": "18:28" ,   "pic":"namaaz-day-1.jpeg",		  "hadith":" "},' +
-		 '{ "Sl_No" : "2",  "Date": "Nov 2, 2018" ,		"Day": "Friday", 	  		"Fazar": "4:34",  "Sunrise": "5:49", 	"Zohar": "11:31",	"Asar": "15:35" ,	"Sunset":"17:11", 	"Magrib": "17:15" ,		"Isha": "18:27" ,   "pic":"namaaz-day-2.jpeg",		  "hadith": " "},' +
-		 '{ "Sl_No" : "3",  "Date": "Nov 3, 2018" ,		"Day": "Saturday",   		"Fazar": "4:34",  "Sunrise": "5:49", 	"Zohar": "11:31",	"Asar": "15:35" ,	"Sunset":"17:10",	"Magrib": "17:15" ,		"Isha": "18:27" ,   "pic":"namaaz-day-3.jpeg",		  "hadith": " "},' +
-		 '{ "Sl_No" : "4",  "Date": "Nov 4, 2018" ,		"Day": "Sunday", 			"Fazar": "4:35",  "Sunrise": "5:50", 	"Zohar": "11:31",	"Asar": "15:34" ,	"Sunset":"17:10", 	"Magrib": "17:14" ,		"Isha": "18:26" ,   "pic":"namaaz-day-4.jpeg",		  "hadith": " "},' +
-		 '{ "Sl_No" : "5",  "Date": "Nov 5, 2018" ,		"Day": "Monday",  			"Fazar": "4:35",  "Sunrise": "5:50", 	"Zohar": "11:31",	"Asar": "15:34" ,	"Sunset":"17:10",	"Magrib": "17:14" ,		"Isha": "18:26" ,   "pic":"namaaz-day-5.jpeg",		  "hadith": " Hz. Nawfal bin Muawiya (r.a.):  “A person who does not perform a prayer on time is like someone whose family and property were removed. Ibn Hibban” "},' +
-		 '{ "Sl_No" : "6",  "Date": "Nov 6, 2018" ,		"Day": "Tuesday", 	  		"Fazar": "4:36",  "Sunrise": "5:51", 	"Zohar": "11:31",	"Asar": "15:33" ,	"Sunset":"17:09", 	"Magrib": "17:13" ,		"Isha": "18:26" ,   "pic":"namaaz-day-6.jpeg",		  "hadith": " One day, the Messenger of Allah (pbuh) talked about prayers. He said, “The prayer of a person who performs five daily prayers without missing will be brightness, evidence and salvation for him on the Day of Judgment. A person who does not perform five daily prayers properly will be together with Qarun (Croesus), Haman, Pharaoh and Ubayy Ibn Khalaf” "},' +
-		 '{ "Sl_No" : "7",  "Date": "Nov 7, 2018" ,		"Day": "Wednesday",  		"Fazar": "4:36",  "Sunrise": "5:51", 	"Zohar": "11:31",	"Asar": "15:33" ,	"Sunset":"17:09", 	"Magrib": "17:13" ,		"Isha": "18:25" ,   "pic":"namaaz-day-7.jpeg",		  "hadith": " The Prophet (pbuh) said: The key to Paradise is prayer, the key to prayer is wudu (ablution)."},' +
-		 '{ "Sl_No" : "8",  "Date": "Nov 8, 2018" ,		"Day": "Thursday", 	  		"Fazar": "4:36",  "Sunrise": "5:52", 	"Zohar": "11:31",	"Asar": "15:33" ,	"Sunset":"17:08", 	"Magrib": "17:12" ,		"Isha": "18:25" ,   "pic":"namaaz-day-8.jpeg",		  "hadith": " Once, the Messenger of Allah said to his Companions, “Pray as follows O Allah! Do not make anybody among the rebellious and deprived people. Then, he asked, Do you know who is rebellious and deprived? The Companions said, Who? O Messenger of Allah! The Prophet said, He who does not perform prayers! "},' +
-		 '{ "Sl_No" : "9",  "Date": "Nov 9, 2018" ,		"Day": "Friday", 		  	"Fazar": "4:37",  "Sunrise": "5:52", 	"Zohar": "11:31",	"Asar": "15:32" ,	"Sunset":"17:08", 	"Magrib": "17:12" ,		"Isha": "18:25" ,   "pic":"namaaz-day-9.jpeg",		  "hadith": " Reported by Hz. Abu Umama (ra), the Prophet states the following:  There is nothing superior to a person who is given by Allah the opportunity to perform a two-rakah prayer giving. As he is busy with praying, goodness and good deeds are poured onto him. "},' +
-		 '{ "Sl_No" : "10", "Date": "Nov 10, 2018", 	"Day": "Saturday",   		"Fazar": "4:37",  "Sunrise": "5:53", 	"Zohar": "11:31",	"Asar": "15:32" ,	"Sunset":"17:08",	"Magrib": "17:12" ,		"Isha": "18:25" ,   "pic":"namaaz-day-10jpeg",	 	  "hadith": " The Messenger of Allah (pbuh) said that Allah stated the following in a sacred hadith: “I made it fard for your ummah to perform five daily prayers. And I made a promise to myself: If someone comes to me by paying attention to performing five daily prayers, I will send him to Paradise. I have nothing to say for the one who does pay attention to prayers."},' +
-		 '{ "Sl_No" : "11", "Date": "Nov 11, 2018", 	"Day": "Sunday", 	 		"Fazar": "4:37",  "Sunrise": "5:53", 	"Zohar": "11:31",	"Asar": "15:32" ,	"Sunset":"17:07",	"Magrib": "17:11" ,		"Isha": "18:24" ,   "pic":"namaaz-day-11.jpeg",	  	  "hadith": " While the Messenger of Allah was passing by a grave, he asked, “Whose grave is it?” The Companions said, “It is the grave of such and such person.” The Messenger of Allah (pbuh) said, “For this person in the grave, to perform a prayer of two-rakahs is better than all of your worldly goods."},' +
-		 '{ "Sl_No" : "12", "Date": "Nov 12, 2018", 	"Day": "Monday",    		"Fazar": "4:37",  "Sunrise": "5:53", 	"Zohar": "11:31",	"Asar": "15:31" ,	"Sunset":"17:07",	"Magrib": "17:11" ,		"Isha": "18:24" ,   "pic":"namaaz-day-12.jpeg",	  	  "hadith": " The Messenger of Allah (pbuh) said, “When man prostrates upon reciting a verse of prostration, Satan moves away from that place by crying and says, I was destroyed. Man was ordered to prostrate and he did; thus, he deserved Paradise. I was also ordered to prostrate but I avoided prostrating. I deserve hellfire.” "},' +
-		 '{ "Sl_No" : "13", "Date": "Nov 13, 2018", 	"Day": "Tuesday", 	  		"Fazar": "4:39",  "Sunrise": "5:54", 	"Zohar": "11:31",	"Asar": "15:31" ,	"Sunset":"17:07",	"Magrib": "17:11" ,	 	"Isha": "18:24" ,   "pic":"namaaz-day-13.jpeg",	  	  "hadith": " reported from Hz. Fatima radıyallahu anha: the Prophet (pbuh) said to me, “O Fatima! If you want to meet me in the hereafter, increase your prostrations (that is, perform prayers more.)”"},' +
-		 '{ "Sl_No" : "14", "Date": "Nov 14, 2018", 	"Day": "Wednesday",  		"Fazar": "4:40",  "Sunrise": "5:56", 	"Zohar": "11:32", 	"Asar": "15:31" , 	"Sunset":"17:06", 	"Magrib": "17:10" ,	 	"Isha": "18:24" ,   "pic":"namaaz-day-14.jpeg",	  	  "hadith": " "},' +
-		 '{ "Sl_No" : "15", "Date": "Nov 15, 2018", 	"Day": "Thursday",   		"Fazar": "4:40",  "Sunrise": "5:56", 	"Zohar": "11:32", 	"Asar": "15:31" , 	"Sunset":"17:06", 	"Magrib": "17:10" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-15.jpeg",	 	  "hadith": " "},' +
-		 '{ "Sl_No" : "16", "Date": "Nov 16, 2018", 	"Day": "Friday", 	  		"Fazar": "4:40",  "Sunrise": "5:56", 	"Zohar": "11:32", 	"Asar": "15:31" , 	"Sunset":"17:06", 	"Magrib": "17:10" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-16.jpeg",	  	  "hadith": " "},' +
-		 '{ "Sl_No" : "17", "Date": "Nov 17, 2018", 	"Day": "Saturday",  		"Fazar": "4:40",  "Sunrise": "5:57", 	"Zohar": "11:32", 	"Asar": "15:31" , 	"Sunset":"17:06", 	"Magrib": "17:10" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	 	  "hadith": " "},' +
-		 '{ "Sl_No" : "18", "Date": "Nov 18, 2018", 	"Day": "Sunday", 	 		"Fazar": "4:40",  "Sunrise": "5:57", 	"Zohar": "11:32", 	"Asar": "15:31" , 	"Sunset":"17:05", 	"Magrib": "17:09" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	      "hadith": " "},' +
-		 '{ "Sl_No" : "19", "Date": "Nov 19, 2018", 	"Day": "Monday",   			"Fazar": "4:42",  "Sunrise": "5:57", 	"Zohar": "11:33", 	"Asar": "15:31" , 	"Sunset":"17:05", 	"Magrib": "17:09" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	      "hadith": " "},' +
-		 '{ "Sl_No" : "20", "Date": "Nov 20, 2018", 	"Day": "Tuesday",   		"Fazar": "4:42",  "Sunrise": "5:59", 	"Zohar": "11:33", 	"Asar": "15:30" , 	"Sunset":"17:05", 	"Magrib": "17:09" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	      "hadith": " "},' +
-		 '{ "Sl_No" : "21", "Date": "Nov 21, 2018", 	"Day": "Wednesday", 		"Fazar": "4:42",  "Sunrise": "5:59", 	"Zohar": "11:33", 	"Asar": "15:30" , 	"Sunset":"17:05", 	"Magrib": "17:09" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	      "hadith": " "},' +
-		 '{ "Sl_No" : "22", "Date": "Nov 22, 2018", 	"Day": "Thursday", 	  		"Fazar": "4:42",  "Sunrise": "5:59", 	"Zohar": "11:33", 	"Asar": "15:30" , 	"Sunset":"17:05", 	"Magrib": "17:09" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	      "hadith": " "},' +
-		 '{ "Sl_No" : "23", "Date": "Nov 23, 2018", 	"Day": "Friday", 		  	"Fazar": "4:44",  "Sunrise": "5:59", 	"Zohar": "11:33", 	"Asar": "15:30" , 	"Sunset":"17:05", 	"Magrib": "17:09" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	      "hadith": " "},' +
-		 '{ "Sl_No" : "24", "Date": "Nov 24, 2018", 	"Day": "Saturday",   		"Fazar": "4:44",  "Sunrise": "6:01", 	"Zohar": "11:34", 	"Asar": "15:30" , 	"Sunset":"17:05", 	"Magrib": "17:09" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	      "hadith": " "},' +
-		 '{ "Sl_No" : "25", "Date": "Nov 25, 2018", 	"Day": "Sunday", 	 		"Fazar": "4:44",  "Sunrise": "6:01", 	"Zohar": "11:34", 	"Asar": "15:30" , 	"Sunset":"17:05", 	"Magrib": "17:09" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	      "hadith": " "},' +
-		 '{ "Sl_No" : "26", "Date": "Nov 26, 2018", 	"Day": "Monday",    		"Fazar": "4:44",  "Sunrise": "6:01", 	"Zohar": "11:34", 	"Asar": "15:30" , 	"Sunset":"17:05", 	"Magrib": "17:09" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	      "hadith": " "},' +
-		 '{ "Sl_No" : "27", "Date": "Nov 27, 2018", 	"Day": "Tuesday", 	  		"Fazar": "4:46",  "Sunrise": "6:03", 	"Zohar": "11:35", 	"Asar": "15:30" , 	"Sunset":"17:05", 	"Magrib": "17:09" ,		"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	      "hadith": " "},' +
-		 '{ "Sl_No" : "28", "Date": "Nov 28, 2018", 	"Day": "Wednesday",  		"Fazar": "4:46",  "Sunrise": "6:03", 	"Zohar": "11:35", 	"Asar": "15:30" , 	"Sunset":"17:05",	"Magrib": "17:09" ,		"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	      "hadith": " "},' +
-		 '{ "Sl_No" : "29", "Date": "Nov 29, 2018", 	"Day": "Friday", 	  		"Fazar": "4:46",  "Sunrise": "6:03", 	"Zohar": "11:35", 	"Asar": "15:30" , 	"Sunset":"17:05",	"Magrib": "17:09" ,	 	"Isha": "18:23" ,   "pic":"namaaz-day-1.jpeg",	      "hadith": " "},' +
-		 '{ "Sl_No" : "30", "Date": "Nov 30, 2018", 	"Day": "Monday", 	  		"Fazar": "4:47",  "Sunrise": "6:05", 	"Zohar": "11:36", 	"Asar": "15:30" , 	"Sunset":"17:05",	"Magrib": "17:09" ,	 	"Isha": "18:24" ,   "pic":"namaaz-day-1.jpeg",	 	  "hadith": " "}]';
+    </div>
     
-		 data = JSON.parse(text);
-		
-		var dateObj = new Date();
-		var month = dateObj.getUTCMonth() + 1; //months from 1-12
-		var day = dateObj.getUTCDate();
-		var year = dateObj.getUTCFullYear();
-	if (month == 1){
-			month = 'Jan';
-		}if (month == 2){
-			month = 'Feb';
-		}if (month == 3){
-			month = 'Mar';
-		}if (month == 4){
-			month = 'Apr';
-		}if (month == 5){
-			month = 'May';
-		}if (month == 6){
-			month = 'June';
-		}if (month == 7){
-			month = 'July';
-		}if (month == 8){
-			month = 'Aug';
-		}if (month == 9){
-			month = 'Sep';
-		}if (month == 10){
-			month = 'Oct';
-		}if (month == 11){
-			month = 'Nov';
-		}if (month == 12){
-			month = 'Dec';
-		}
-		var newdate = month + " " + day + ", "+ year;
+    <hr>
+        <p><label><b><u>Today's Weather Details:</u></b> </label></p>
+        <!-- weather widget start --><a target="_blank" href="http://www.booked.net/weather/bhubaneswar-26830"><img src="https://w.bookcdn.com/weather/picture/3_26830_1_1_159ee8_430_ffffff_333333_08488D_1_ffffff_333333_0_6.png?scode=124&domid=w209&anc_id=22382"  alt="booked.net"/></a><!-- weather widget end -->
+    <hr>
+
+    <font size="10"><b><u>Hadith of the Day</u></b> </font> 
+    <div id="picleft">  
+        <p></p> 
+        <div id="hadith"></div>
+        <p></p>
+        <font size="5">For more hadith ,Please Click <a href="https://www.al-islam.org/forty-ahadith-on-salat/importance-and-virtues-prayers"><font color="FF0000">here</font></a></font>
+    </div>
+    <hr>    
+    <font size="10"><b><u>Pic of the Day</u> </b></font>    
+    <div id="hadeesRight"></div>
+     <div class="pic-hadith" >  </div>  
+    <hr>    
+    <script>
+        var text = '[' +        
+         '{ "Sl_No" : "1",  "Date": "Nov 1, 2018" ,     "Day": "Thursday",          "Fazar": "4:33",  "Sunrise": "5:48",    "Zohar": "11:31",   "Asar": "15:36" ,   "Sunset":"17:11",   "Magrib": "17:16" ,     "Isha": "18:28" ,   "pic":"namaaz-day-1.jpeg",         "hadith": " Imam As-Sadiq (peace be upon him) said: “One obligatory prayer is better than performing Hajj twenty times, and the performance of one Hajj is better than giving away a house full of gold.” "},' +
+         '{ "Sl_No" : "2",  "Date": "Nov 2, 2018" ,     "Day": "Friday",            "Fazar": "4:34",  "Sunrise": "5:49",    "Zohar": "11:31",   "Asar": "15:35" ,   "Sunset":"17:11",   "Magrib": "17:15" ,     "Isha": "18:27" ,   "pic":"namaaz-day-2.jpeg",         "hadith": " The Messenger of Allah (peace be upon him and his progeny) said: “For every thing there is a face and the face of your religion is prayers. So see to it that none from amongst you damages and disfigures the face of his religion.” "},' +
+         '{ "Sl_No" : "3",  "Date": "Nov 3, 2018" ,     "Day": "Saturday",          "Fazar": "4:34",  "Sunrise": "5:49",    "Zohar": "11:31",   "Asar": "15:35" ,   "Sunset":"17:10",   "Magrib": "17:15" ,     "Isha": "18:27" ,   "pic":"namaaz-day-3.jpeg",         "hadith": " The Messenger of Allah (peace be upon him and his progeny) said: “Whenever the time of each prayer arrives, an Angel announces to the people: (O’ People!) Stand up and extinguish, with prayers, the fire which you have set alight for yourselves.”"},' +
+         '{ "Sl_No" : "4",  "Date": "Nov 4, 2018" ,     "Day": "Sunday",            "Fazar": "4:35",  "Sunrise": "5:50",    "Zohar": "11:31",   "Asar": "15:34" ,   "Sunset":"17:10",   "Magrib": "17:14" ,     "Isha": "18:26" ,   "pic":"namaaz-day-4.jpeg",         "hadith": " The Messenger of Allah (peace be upon him and his progeny) said: “The position of prayers with respect to religion is similar to that of the head with respect to the body.”"},' +
+         '{ "Sl_No" : "5",  "Date": "Nov 5, 2018" ,     "Day": "Monday",            "Fazar": "4:35",  "Sunrise": "5:50",    "Zohar": "11:31",   "Asar": "15:34" ,   "Sunset":"17:10",   "Magrib": "17:14" ,     "Isha": "18:26" ,   "pic":"namaaz-day-5.jpeg",         "hadith": " Hz. Nawfal bin Muawiya (r.a.):  “A person who does not perform a prayer on time is like someone whose family and property were removed. Ibn Hibban” "},' +
+         '{ "Sl_No" : "6",  "Date": "Nov 6, 2018" ,     "Day": "Tuesday",           "Fazar": "4:36",  "Sunrise": "5:51",    "Zohar": "11:31",   "Asar": "15:33" ,   "Sunset":"17:09",   "Magrib": "17:13" ,     "Isha": "18:26" ,   "pic":"namaaz-day-6.jpeg",         "hadith": " One day, the Messenger of Allah (pbuh) talked about prayers. He said, “The prayer of a person who performs five daily prayers without missing will be brightness, evidence and salvation for him on the Day of Judgment. A person who does not perform five daily prayers properly will be together with Qarun (Croesus), Haman, Pharaoh and Ubayy Ibn Khalaf” "},' +
+         '{ "Sl_No" : "7",  "Date": "Nov 7, 2018" ,     "Day": "Wednesday",         "Fazar": "4:36",  "Sunrise": "5:51",    "Zohar": "11:31",   "Asar": "15:33" ,   "Sunset":"17:09",   "Magrib": "17:13" ,     "Isha": "18:25" ,   "pic":"namaaz-day-7.jpeg",         "hadith": " The Prophet (pbuh) said: The key to Paradise is prayer, the key to prayer is wudu (ablution)."},' +
+         '{ "Sl_No" : "8",  "Date": "Nov 8, 2018" ,     "Day": "Thursday",          "Fazar": "4:36",  "Sunrise": "5:52",    "Zohar": "11:31",   "Asar": "15:33" ,   "Sunset":"17:08",   "Magrib": "17:12" ,     "Isha": "18:25" ,   "pic":"namaaz-day-8.jpeg",         "hadith": " Once, the Messenger of Allah said to his Companions, “Pray as follows O Allah! Do not make anybody among the rebellious and deprived people. Then, he asked, Do you know who is rebellious and deprived? The Companions said, Who? O Messenger of Allah! The Prophet said, He who does not perform prayers! "},' +
+         '{ "Sl_No" : "9",  "Date": "Nov 9, 2018" ,     "Day": "Friday",            "Fazar": "4:37",  "Sunrise": "5:52",    "Zohar": "11:31",   "Asar": "15:32" ,   "Sunset":"17:08",   "Magrib": "17:12" ,     "Isha": "18:25" ,   "pic":"namaaz-day-9.jpeg",         "hadith": " Reported by Hz. Abu Umama (ra), the Prophet states the following:  There is nothing superior to a person who is given by Allah the opportunity to perform a two-rakah prayer giving. As he is busy with praying, goodness and good deeds are poured onto him. "},' +
+         '{ "Sl_No" : "10", "Date": "Nov 10, 2018",     "Day": "Saturday",          "Fazar": "4:37",  "Sunrise": "5:53",    "Zohar": "11:31",   "Asar": "15:32" ,   "Sunset":"17:08",   "Magrib": "17:12" ,     "Isha": "18:25" ,   "pic":"namaaz-day-10jpeg",         "hadith": " The Messenger of Allah (pbuh) said that Allah stated the following in a sacred hadith: “I made it fard for your ummah to perform five daily prayers. And I made a promise to myself: If someone comes to me by paying attention to performing five daily prayers, I will send him to Paradise. I have nothing to say for the one who does pay attention to prayers."},' +
+         '{ "Sl_No" : "11", "Date": "Nov 11, 2018",     "Day": "Sunday",            "Fazar": "4:37",  "Sunrise": "5:53",    "Zohar": "11:31",   "Asar": "15:32" ,   "Sunset":"17:07",   "Magrib": "17:11" ,     "Isha": "18:24" ,   "pic":"namaaz-day-11.jpeg",        "hadith": " While the Messenger of Allah was passing by a grave, he asked, “Whose grave is it?” The Companions said, “It is the grave of such and such person.” The Messenger of Allah (pbuh) said, “For this person in the grave, to perform a prayer of two-rakahs is better than all of your worldly goods."},' +
+         '{ "Sl_No" : "12", "Date": "Nov 12, 2018",     "Day": "Monday",            "Fazar": "4:37",  "Sunrise": "5:53",    "Zohar": "11:31",   "Asar": "15:31" ,   "Sunset":"17:07",   "Magrib": "17:11" ,     "Isha": "18:24" ,   "pic":"namaaz-day-12.jpeg",        "hadith": " The Messenger of Allah (pbuh) said, “When man prostrates upon reciting a verse of prostration, Satan moves away from that place by crying and says, I was destroyed. Man was ordered to prostrate and he did; thus, he deserved Paradise. I was also ordered to prostrate but I avoided prostrating. I deserve hellfire.” "},' +
+         '{ "Sl_No" : "13", "Date": "Nov 13, 2018",     "Day": "Tuesday",           "Fazar": "4:39",  "Sunrise": "5:54",    "Zohar": "11:31",   "Asar": "15:31" ,   "Sunset":"17:07",   "Magrib": "17:11" ,     "Isha": "18:24" ,   "pic":"namaaz-day-13.jpeg",        "hadith": " Reported from Hz. Fatima radıyallahu anha: the Prophet (pbuh) said to me, “O Fatima! If you want to meet me in the hereafter, increase your prostrations (that is, perform prayers more.)”"},' +
+         '{ "Sl_No" : "14", "Date": "Nov 14, 2018",     "Day": "Wednesday",         "Fazar": "4:40",  "Sunrise": "5:56",    "Zohar": "11:32",   "Asar": "15:31" ,   "Sunset":"17:06",   "Magrib": "17:10" ,     "Isha": "18:24" ,   "pic":"namaaz-day-14.jpeg",        "hadith": " Reported from Abdullah bin Qurt (May Allah be pleased with him): The Messenger of Allah (pbuh) said, “On the Day of Judgment, a slave will be questioned about his prayers first. If his prayers are good, his other deeds will be good, too. If his prayers are bad, his other deeds will be bad, too."},' +
+         '{ "Sl_No" : "15", "Date": "Nov 15, 2018",     "Day": "Thursday",          "Fazar": "4:40",  "Sunrise": "5:56",    "Zohar": "11:32",   "Asar": "15:31" ,   "Sunset":"17:06",   "Magrib": "17:10" ,     "Isha": "18:23" ,   "pic":"namaaz-day-15.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) said: “The example of the five (daily) prayers is like that of a clear-water river flowing in front of your houses in which a person washes himself five times a day – cleansing him from all dirt.”"},' +
+         '{ "Sl_No" : "16", "Date": "Nov 16, 2018",     "Day": "Friday",            "Fazar": "4:40",  "Sunrise": "5:56",    "Zohar": "11:32",   "Asar": "15:31" ,   "Sunset":"17:06",   "Magrib": "17:10" ,     "Isha": "18:23" ,   "pic":"namaaz-day-16.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) states that Allah, The Exalted has said: “I have made the five prayers obligatory upon your Ummah and have made a covenant with Myself that one who maintains his prayers with respect to their timings, I shall place him in Paradise. As for the one, who does not maintain the timings, I have no covenant (with him).”"},' +
+         '{ "Sl_No" : "17", "Date": "Nov 17, 2018",     "Day": "Saturday",          "Fazar": "4:40",  "Sunrise": "5:57",    "Zohar": "11:32",   "Asar": "15:31" ,   "Sunset":"17:06",   "Magrib": "17:10" ,     "Isha": "18:23" ,   "pic":"namaaz-day-17.jpeg",        "hadith": " Imam Al-Baqir (peace be upon him) has said: “Allah’s remembrance of ‘people who pray’ is greater and superior to their remembrance of Him. Do you not observe that He has said (in the Noble Qur’an): {Remember Me and I shall remember you.}”"},' +
+         '{ "Sl_No" : "18", "Date": "Nov 18, 2018",     "Day": "Sunday",            "Fazar": "4:40",  "Sunrise": "5:57",    "Zohar": "11:32",   "Asar": "15:31" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-18.jpeg",        "hadith": " Imam `Ali (peace be upon him) said: “When a person stands up for prayers, Iblis approaches him and looks at him with envy and jealousy, as he sees the Mercy of Allah encompassing the person.”"},' +
+         '{ "Sl_No" : "19", "Date": "Nov 19, 2018",     "Day": "Monday",            "Fazar": "4:42",  "Sunrise": "5:57",    "Zohar": "11:33",   "Asar": "15:31" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-19.jpeg",        "hadith": " Imam As-Sadiq (peace be upon him) has said: “When a person maintains his prayer and offers it at its stipulated time, it ascends in the form of a pure white light and calls out to him: “You have guarded me, may Allah protect you.” But if he does not maintain his prayer and does not offer it at its decreed time, it ascends as a dark and gloomy form and says to him: You have destroyed me, may Allah destroy you.”"},' +
+         '{ "Sl_No" : "20", "Date": "Nov 20, 2018",     "Day": "Tuesday",           "Fazar": "4:42",  "Sunrise": "5:59",    "Zohar": "11:33",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-20.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) has said: “The most beloved of deeds in the eyes of Allah are: offering prayers at the stipulated times; (then) goodness and kindness towards parents; (and then) Jihad in the way of Allah.”"},' +
+         '{ "Sl_No" : "21", "Date": "Nov 21, 2018",     "Day": "Wednesday",         "Fazar": "4:42",  "Sunrise": "5:59",    "Zohar": "11:33",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-21.jpeg",        "hadith": " The Noble Prophet (peace be upon him and his progeny) has said: “If a person abandons his prayer such that he neither desires its rewards nor fears its chastisement, for such a person I do not care if he dies a Jew, a Christian or a Magian.”"},' +
+         '{ "Sl_No" : "22", "Date": "Nov 22, 2018",     "Day": "Thursday",          "Fazar": "4:42",  "Sunrise": "5:59",    "Zohar": "11:33",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-22.jpeg",        "hadith": " The Noble Prophet (peace be upon him and his progeny) has said: “The good deeds of one who, without any appropriate excuse does not offer his prayer until its time passes away, are annulled.” He then said: “The divide between a believer and disbelief is the abandonment of prayers.”"},' +
+         '{ "Sl_No" : "23", "Date": "Nov 23, 2018",     "Day": "Friday",            "Fazar": "4:44",  "Sunrise": "5:59",    "Zohar": "11:33",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-23.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) has said: “One who considers the prayers to be insignificant and trivial is not from me. By Allah! He shall never come close to me at the pool of Kauthar.”"},' +
+         '{ "Sl_No" : "24", "Date": "Nov 24, 2018",     "Day": "Saturday",          "Fazar": "4:44",  "Sunrise": "6:01",    "Zohar": "11:34",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-24.jpeg",        "hadith": " Imam As-Sadiq (peace be upon him) said: “Our intercession shall never reach one who considers his prayers to be inconsequential and unimportant.”"},' +
+         '{ "Sl_No" : "25", "Date": "Nov 25, 2018",     "Day": "Sunday",            "Fazar": "4:44",  "Sunrise": "6:01",    "Zohar": "11:34",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-25.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) has said: “Do not destroy your prayers for verily one who destroys his prayers shall be resurrected in the company of Qarun, Haman and Fir`awn.”"},' +
+         '{ "Sl_No" : "26", "Date": "Nov 26, 2018",     "Day": "Monday",            "Fazar": "4:44",  "Sunrise": "6:01",    "Zohar": "11:34",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-26.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) has said: “Prayer is the pillar of your religion and one who intentionally forsakes his prayer has destroyed his religion. And one who does not guard the times of the prayers, shall be made to enter ‘Wayl’, which is a valley in Hell,"},' +
+         '{ "Sl_No" : "27", "Date": "Nov 27, 2018",     "Day": "Tuesday",           "Fazar": "4:46",  "Sunrise": "6:03",    "Zohar": "11:35",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-27.jpeg",        "hadith": " The Noble Prophet (peace be upon him and his progeny) has said: “The name of one who forsakes his prayer intentionally is written upon The door of Hell from which he shall (eventually) enter.”"},' +
+         '{ "Sl_No" : "28", "Date": "Nov 28, 2018",     "Day": "Wednesday",         "Fazar": "4:46",  "Sunrise": "6:03",    "Zohar": "11:35",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-28.jpeg",        "hadith": " Imam Al-Baqir (peace be upon him) narrates: One day the Messenger of Allah (peace be upon him and his progeny) was seated in the mosque when a person entered and began praying, but in a manner such that neither did he perform his ruku’ (bowing), nor his sujood (prostration) in a correct manner. Observing this, the Messenger of Allah commented: “(This person) pecks as a crow pecks. Should he die and the state of his prayers be as they are now, he shall surely not die upon my religion.”"},' +
+         '{ "Sl_No" : "29", "Date": "Nov 29, 2018",     "Day": "Friday",            "Fazar": "4:46",  "Sunrise": "6:03",    "Zohar": "11:35",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-29.jpeg",        "hadith": " Narrated Abu Huraira Rasulullah (SAW) said: The angels keep on asking Allah s forgiveness for anyone of you, as long as he is at his Mu’salla (praying place) and he does not pass wind (Hadath). They say, O Allah! Forgive him, O Allah! be Merciful to him. "},' +
+//       '{ "Sl_No" : "30", "Date": "Nov 30, 2018",     "Day": "Monday",            "Fazar": "4:47",  "Sunrise": "6:05",    "Zohar": "11:36",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:24" ,   "pic":"namaaz-day-31.jpeg",        "hadith": " Narrated Abu Hurairah (RA) Rasulullah (SAW) said:"Allah will prepare for him who goes to the mosque in the morning and in the afternoon (for the congregational prayer) an honorable place in Paradise with good hospitality for (what he has done) every morning and afternoon goings.”"}]';
+         '{ "Sl_No" : "30", "Date": "Nov 30, 2018",     "Day": "Monday",            "Fazar": "4:47",  "Sunrise": "6:05",    "Zohar": "11:36",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:24" ,   "pic":"namaaz-day-30.jpeg",        "hadith": " Narrated Abu Hurairah (RA) Rasulullah (SAW) said:"Allah will prepare for him who goes to the mosque in the morning and in the afternoon (for the congregational prayer) an honorable place in Paradise with good hospitality for (what he has done) every morning and afternoon goings.”"}]';
+    
+         data = JSON.parse(text);
+        
+        var dateObj = new Date();
+        var month = dateObj.getUTCMonth() + 1; //months from 1-12
+        var day = dateObj.getUTCDate();
+        var year = dateObj.getUTCFullYear();
+    if (month == 1){
+            month = 'Jan';
+        }if (month == 2){
+            month = 'Feb';
+        }if (month == 3){
+            month = 'Mar';
+        }if (month == 4){
+            month = 'Apr';
+        }if (month == 5){
+            month = 'May';
+        }if (month == 6){
+            month = 'June';
+        }if (month == 7){
+            month = 'July';
+        }if (month == 8){
+            month = 'Aug';
+        }if (month == 9){
+            month = 'Sep';
+        }if (month == 10){
+            month = 'Oct';
+        }if (month == 11){
+            month = 'Nov';
+        }if (month == 12){
+            month = 'Dec';
+        }
+        var newdate = month + " " + day + ", "+ year;
 
 
-		function createtable() {
-			for(var i = 0; i< 30; i++){
-				 data[i].Duration = calculateDuration(data[i].Date,data[i].Zohar,data[i].Asar);
-	 
-				var today = new Date();
-				today.setDate(30);
-				var tomorrow = new Date();
-				tomorrow.setDate(today.getDate()+1);
-			}
-			<!--To fill the table with javascript-->
-			for (var j = 0; j < 30; j++) {
-			
+        function createtable() {
+            for(var i = 0; i< 30; i++){
+                 data[i].Duration = calculateDuration(data[i].Date,data[i].Zohar,data[i].Asar);
+     
+                var today = new Date();
+                today.setDate(30);
+                var tomorrow = new Date();
+                tomorrow.setDate(today.getDate()+1);
+            }
+            <!--To fill the table with javascript-->
+            for (var j = 0; j < 30; j++) {
+            
 
-				if (j % 2 == 0) {
-					if(newdate == data[j].Date){
-						document.write("<tr class='row-selected'><td>" + data[j].Date + " </td>");
-					}else{
-						document.write("<tr class='row-odd'><td>" + data[j].Date + " </td>");
-					}
-					document.write("<td>" + data[j].Day + "</td>");
-					document.write("<td>" + data[j].Fazar + "</td>");
-					document.write("<td>" + data[j].Sunrise + "</td>");
-					document.write("<td>" + data[j].Zohar + "</td>");
-					document.write("<td>" + data[j].Asar + "</td>");
-					document.write("<td>" + data[j].Sunset + "</td>");
-					document.write("<td>" + data[j].Magrib + "</td>");
-					document.write("<td>" + data[j].Isha + "</td></tr>");
-				} else {
-					if(newdate == data[j].Date){
-						document.write("<tr class='row-selected'><td>" + data[j].Date + " </td>");
-					}else{
-						document.write("<tr  bgcolor='#aeb2bf' class='row-even'><td>" + data[j].Date + " </td>");
-					}
-				document.write("<td>" + data[j].Day + "</td>");
-					document.write("<td>" + data[j].Fazar + "</td>");
-					document.write("<td>" + data[j].Sunrise + "</td>");
-					document.write("<td>" + data[j].Zohar + "</td>");
-					document.write("<td>" + data[j].Asar + "</td>");
-					document.write("<td>" + data[j].Sunset + "</td>");
-					document.write("<td>" + data[j].Magrib + "</td>");
-					document.write("<td>" + data[j].Isha + "</td></tr>");
-				}
-			}
-		}
-		function calculateDuration(date,startTime,endTime){
-			var endtm = new Date( date + " "+ endTime).getTime();
-			var sttm = new Date( date + " "+ startTime).getTime();
-			var duration = endtm - sttm;
-			var totalHour = Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-			var totalMinutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
-			var totalSeconds = Math.floor((duration % (1000 * 60)) / 1000);
-	
-			return totalHour + ": "+ ('0' + totalMinutes).slice(-2); 
-		}
-		for(var i = 0; i< 30; i++){
-			if(newdate == data[i].Date){
-				displayImage(data[i].pic,data[i].hadith);
-			    var tr = $(this).parent();
-					if(tr.hasClass("selected")) {
-						tr.removeClass("selected");
-					} else {
-						tr.addClass("selected");
-					}
-			
-			
-			 //  var clock = document.getElementById("clockdiv2");
-// 			  var msecSpan = clock.querySelector('.msec');
-// 			  var hoursSpan = clock.querySelector('.hours');
-// 			  var minutesSpan = clock.querySelector('.minutes');
-// 			  var secondsSpan = clock.querySelector('.seconds');
-
-
-// 				daysSpan.innerHTML = t.days;
-		// 		var totalDuration = calculateDuration(data[i].Date,data[i].Zohar,data[i].Asar);
-// 				
-// 				var ss = totalDuration.split(":");  
-// 				hoursSpan.innerHTML = ss[0];
-// 				minutesSpan.innerHTML = ss[1] ;
-// 				secondsSpan.innerHTML = '00';
-// 				msecSpan.innerHTML = '00';
-
-				var now = new Date().getTime();
-				var now2 = new Date()
-				
-				var Fazar 	= data[i].Date+ ' ' + data[i].Fazar +':00' 
-				var fajar_time = new Date(Fazar);
-				var Zohar   = data[i].Date+ ' ' + data[i].Zohar +':00'  
-				var zohar_time = new Date(Zohar);
-				var Asar 	= data[i].Date+ ' ' + data[i].Asar +':00'
-				var asar_time = new Date(Asar);
-				var Magrib	= data[i].Date+ ' ' + data[i].Magrib +':00' 
-				var magrib_time = new Date(Magrib);
-				var Isha 	= data[i].Date+ ' ' + data[i].Isha +':00'  
-				var isha_time = new Date(Isha);
-				
-				
-				var dateObj = new Date();
-				var month = dateObj.getUTCMonth() + 1; //months from 1-12
-				var day = dateObj.getUTCDate();
-				var year = dateObj.getUTCFullYear();
-				if (month == 11){
-					month = 'Nov';
-				}else{
-					month = 'Dec';
-				}
-				var newdate = month + " " + day + ", "+ year;
-
-				
-				if (now2 < fajar_time) {
-					var countEndTime = new Date(newdate + ' '+ data[i].Zohar).getTime();
-					var countStartTime = new Date(newdate + ' '+ data[i].Fazar).getTime();
-					var countEndTime2 = new Date(newdate + ' '+ data[i].Zohar);
-					
-					document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Fazar';
-					document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Fazar;
-				}
-				else if(now2 > fajar_time && now2 < zohar_time) {
-					var countEndTime = new Date(newdate + ' '+ data[i].Zohar).getTime();
-					var countStartTime = new Date(newdate + ' '+ data[i].Fazar).getTime();
-					var countEndTime2 = new Date(newdate + ' '+ data[i].Zohar);
-					
-					document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Zohar';
-					document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Zohar;
-					
-				}else if (now2 > zohar_time && now2 < asar_time) {
-					var countEndTime = new Date(newdate + ' '+ data[i].Asar).getTime();
-					var countStartTime = new Date(newdate + ' '+ data[i].Zohar).getTime();
-					var countEndTime2 = new Date(newdate + ' '+ data[i].Asar);
-					
-					document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Asar';
-					document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Asar;
-				}else if (now2 > asar_time && now2 < magrib_time) {
-					var countEndTime = new Date(newdate + ' '+ data[i].Magrib).getTime();
-					var countStartTime = new Date(newdate + ' '+ data[i].Asar).getTime();
-					var countEndTime2 = new Date(newdate + ' '+ data[i].Magrib);
-					
-					document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Magrib';
-					document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Magrib;
-					
-				} else  if (now2 < isha_time && newdate == today_date){
-					var countEndTime = new Date(newdate + ' '+ data[i].Isha).getTime();
-					var countStartTime = new Date(newdate + ' '+ data[i].Magrib).getTime();
-					var countEndTime2 = new Date(newdate + ' '+ data[i].Isha);
-					
-					document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Isha';
-					document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Isha;
-				
-				}else{
-					document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Fazar';
-					document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i+1].Fazar;
-				}
-				
-				
-				var today_date =data[i].Date;
-
-				var x = setInterval(function() {
-
-				var now = new Date().getTime();
-				var now2 = new Date()
-				var distance = countEndTime - now;
-				var duration = countEndTime - countStartTime;
-
-				var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-				var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-				var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-				var now2 = new Date()
-				var miliSeconds = Math.floor((countEndTime2 - now2) % 1000) ; 
+                if (j % 2 == 0) {
+                    if(newdate == data[j].Date){
+                        document.write("<tr class='row-selected'><td>" + data[j].Date + " </td>");
+                    }else{
+                        document.write("<tr class='row-odd'><td>" + data[j].Date + " </td>");
+                    }
+                    document.write("<td>" + data[j].Day + "</td>");
+                    document.write("<td>" + data[j].Fazar + "</td>");
+                    document.write("<td>" + data[j].Sunrise + "</td>");
+                    document.write("<td>" + data[j].Zohar + "</td>");
+                    document.write("<td>" + data[j].Asar + "</td>");
+                    document.write("<td>" + data[j].Sunset + "</td>");
+                    document.write("<td>" + data[j].Magrib + "</td>");
+                    document.write("<td>" + data[j].Isha + "</td></tr>");
+                } else {
+                    if(newdate == data[j].Date){
+                        document.write("<tr class='row-selected'><td>" + data[j].Date + " </td>");
+                    }else{
+                        document.write("<tr  bgcolor='#aeb2bf' class='row-even'><td>" + data[j].Date + " </td>");
+                    }
+                document.write("<td>" + data[j].Day + "</td>");
+                    document.write("<td>" + data[j].Fazar + "</td>");
+                    document.write("<td>" + data[j].Sunrise + "</td>");
+                    document.write("<td>" + data[j].Zohar + "</td>");
+                    document.write("<td>" + data[j].Asar + "</td>");
+                    document.write("<td>" + data[j].Sunset + "</td>");
+                    document.write("<td>" + data[j].Magrib + "</td>");
+                    document.write("<td>" + data[j].Isha + "</td></tr>");
+                }
+            }
+        }
+        function calculateDuration(date,startTime,endTime){
+            var endtm = new Date( date + " "+ endTime).getTime();
+            var sttm = new Date( date + " "+ startTime).getTime();
+            var duration = endtm - sttm;
+            var totalHour = Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var totalMinutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+            var totalSeconds = Math.floor((duration % (1000 * 60)) / 1000);
+    
+            return totalHour + ": "+ ('0' + totalMinutes).slice(-2); 
+        }
+        for(var i = 0; i< 30; i++){
+            if(newdate == data[i].Date){
+                displayImage(data[i].pic,data[i].hadith);
+                var tr = $(this).parent();
+                    if(tr.hasClass("selected")) {
+                        tr.removeClass("selected");
+                    } else {
+                        tr.addClass("selected");
+                    }
+            
+            
+             //  var clock = document.getElementById("clockdiv2");
+//            var msecSpan = clock.querySelector('.msec');
+//            var hoursSpan = clock.querySelector('.hours');
+//            var minutesSpan = clock.querySelector('.minutes');
+//            var secondsSpan = clock.querySelector('.seconds');
 
 
-			  var clock = document.getElementById("clockdiv");
-			  var msecSpan = clock.querySelector('.msec');
-			  var hoursSpan = clock.querySelector('.hours');
-			  var minutesSpan = clock.querySelector('.minutes');
-			  var secondsSpan = clock.querySelector('.seconds');
+//              daysSpan.innerHTML = t.days;
+        //      var totalDuration = calculateDuration(data[i].Date,data[i].Zohar,data[i].Asar);
+//              
+//              var ss = totalDuration.split(":");  
+//              hoursSpan.innerHTML = ss[0];
+//              minutesSpan.innerHTML = ss[1] ;
+//              secondsSpan.innerHTML = '00';
+//              msecSpan.innerHTML = '00';
 
-			  function updateClock() {
+                var now = new Date().getTime();
+                var now2 = new Date()
+                
+                var Fazar   = data[i].Date+ ' ' + data[i].Fazar +':00' 
+                var fajar_time = new Date(Fazar);
+                var Zohar   = data[i].Date+ ' ' + data[i].Zohar +':00'  
+                var zohar_time = new Date(Zohar);
+                var Asar    = data[i].Date+ ' ' + data[i].Asar +':00'
+                var asar_time = new Date(Asar);
+                var Magrib  = data[i].Date+ ' ' + data[i].Magrib +':00' 
+                var magrib_time = new Date(Magrib);
+                var Isha    = data[i].Date+ ' ' + data[i].Isha +':00'  
+                var isha_time = new Date(Isha);
+                
+                
+                var dateObj = new Date();
+                var month = dateObj.getUTCMonth() + 1; //months from 1-12
+                var day = dateObj.getUTCDate();
+                var year = dateObj.getUTCFullYear();
+                if (month == 11){
+                    month = 'Nov';
+                }else{
+                    month = 'Dec';
+                }
+                var newdate = month + " " + day + ", "+ year;
 
-				msecSpan.innerHTML = ('0' + miliSeconds).slice(-3);
-				hoursSpan.innerHTML = ('0' + hours).slice(-2);
-				minutesSpan.innerHTML = ('0' + minutes).slice(-2);
-				secondsSpan.innerHTML = ('0' + seconds).slice(-2);
+                
+                if (now2 < fajar_time) {
+                    var countEndTime = new Date(newdate + ' '+ data[i].Sunrise).getTime();
+                    var countStartTime = new Date(newdate + ' '+ data[i].Fazar).getTime();
+                    var countEndTime2 = new Date(newdate + ' '+ data[i].Sunrise);
+                    
+                    document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Fazar';
+                    document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Fazar;
+                }
+                else if(now2 > fajar_time && now2 < zohar_time) {
+                    var countEndTime = new Date(newdate + ' '+ data[i].Zohar).getTime();
+                    var countStartTime = new Date(newdate + ' '+ data[i].Fazar).getTime();
+                    var countEndTime2 = new Date(newdate + ' '+ data[i].Zohar);
+                    
+                    document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Zohar';
+                    document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Zohar;
+                    
+                }else if (now2 > zohar_time && now2 < asar_time) {
+                    var countEndTime = new Date(newdate + ' '+ data[i].Asar).getTime();
+                    var countStartTime = new Date(newdate + ' '+ data[i].Zohar).getTime();
+                    var countEndTime2 = new Date(newdate + ' '+ data[i].Asar);
+                    
+                    document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Asar';
+                    document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Asar;
+                }else if (now2 > asar_time && now2 < magrib_time) {
+                    var countEndTime = new Date(newdate + ' '+ data[i].Magrib).getTime();
+                    var countStartTime = new Date(newdate + ' '+ data[i].Asar).getTime();
+                    var countEndTime2 = new Date(newdate + ' '+ data[i].Magrib);
+                    
+                    document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Magrib';
+                    document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Magrib;
+                    
+                } else  if (now2 < isha_time && newdate == today_date){
+                    var countEndTime = new Date(newdate + ' '+ data[i].Isha).getTime();
+                    var countStartTime = new Date(newdate + ' '+ data[i].Magrib).getTime();
+                    var countEndTime2 = new Date(newdate + ' '+ data[i].Isha);
+                    
+                    document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Isha';
+                    document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Isha;
+                
+                }else{
+                    document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Fazar';
+                    document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i+1].Fazar;
+                }
+                
+                
+                var today_date =data[i].Date;
+
+                var x = setInterval(function() {
+
+                var now = new Date().getTime();
+                var now2 = new Date()
+                var distance = countEndTime - now;
+                var duration = countEndTime - countStartTime;
+
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                var now2 = new Date()
+                var miliSeconds = Math.floor((countEndTime2 - now2) % 1000) ; 
 
 
-			  }
+              var clock = document.getElementById("clockdiv");
+              var msecSpan = clock.querySelector('.msec');
+              var hoursSpan = clock.querySelector('.hours');
+              var minutesSpan = clock.querySelector('.minutes');
+              var secondsSpan = clock.querySelector('.seconds');
 
-			  updateClock();
-			  
-		
-				
+              function updateClock() {
 
-		
-			  document.getElementById("expired").style.visibility="hidden";
-			  document.getElementById("clockdiv").style.visibility="visible";
-				if (distance < 0 && now2 > isha_time && newdate == today_date) {
-
-				 	document.getElementById("expired").style.color = "red";
-					document.getElementById("expired").style.visibility="visible";
-			  		document.getElementById("clockdiv").style.visibility="hidden";
-				}else if (distance < 0 && newdate != today_date){
-					 setInterval('window.location.reload()', 60000*5);
-				}
-				
-				
-			}, 10);
-			
-			}
-		}
-		
-		function displayImage(image,hadith){
-			var elem = document.createElement("img");
-			elem.setAttribute("src", image);
-			elem.setAttribute("height", "500px");
-			elem.setAttribute("width", "50%");
-			elem.setAttribute("alt", "Rmadan Mubarak");
-			document.getElementById("hadeesRight").appendChild(elem);
-			document.getElementById("hadith").innerHTML = hadith ;
-			document.getElementById("hadith").style.fontSize = "30px" ;
-			document.getElementById("hadith").style.color = "white" ;
-		}
-
-	</script>
+                msecSpan.innerHTML = ('0' + miliSeconds).slice(-3);
+                hoursSpan.innerHTML = ('0' + hours).slice(-2);
+                minutesSpan.innerHTML = ('0' + minutes).slice(-2);
+                secondsSpan.innerHTML = ('0' + seconds).slice(-2);
 
 
+              }
 
-	  <p><label><b><u>Namaaz Timetable November 2018 of Bhubaneshwar </u></b></label></p>              
-		<table>
-			<tr class="unselected">
-				<th>Date</th>
-				<th>Day</th>
-				<th>Fazar</th>
-				<th>Sunrise</th>
-				<th>Zohar</th>
-				<th>Asar</th>
-				<th>Sunset</th>
-				<th>Magrib</th>
-				<th>Isha</th>
-			</tr>
-			<script>createtable();</script>
-		</table>
-	
-	<script>
-				for(var i = 0; i< 30; i++){
-					if(newdate == data[i].Date){
-					
-				
-					switch (data[i].Sl_No) {
-					case "1":
-						document.getElementById("today").innerHTML =  "Today   : " + data[i].Day + ",   0" +  data[i].Sl_No+"st" +  " November 2018 ";
-						break; 
-					case "2": 
-						document.getElementById("today").innerHTML =  "Today  : " + data[i].Day + ",   0" +  data[i].Sl_No+"nd" +  " November 2018 ";
-						break; 
-					case "21": 
-						 document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",   " +  data[i].Sl_No+"st" +  " November 2018 ";
-						break; 
-					case "22": 
-						document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",  " +  data[i].Sl_No+"nd" +  " November 2018";
-						break; 
-					case "3": 
-						document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",  0" +  data[i].Sl_No+"rd" +  " November 2018 ";
-						break; 
-					case "23": 
-						document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",  " +  data[i].Sl_No+"rd" +  " November 2018";
-						break; 
-					case "4": 
-						document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",   0" +  data[i].Sl_No+"th" +  " November 2018 ";
-					case "5": 
-						document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",   0" +  data[i].Sl_No+"th" +  " November 2018";
-					case "6": 
-						document.getElementById("today").innerHTML =  "Today : " + data[i].Day +",    0" +  data[i].Sl_No+"th" +  " November 2018 ";
-					case "7": 
-						document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",   0" +  data[i].Sl_No+"th" +  " November 2018 ";
-					case "8": 
-						document.getElementById("today").innerHTML =  "Today : " + data[i].Day +",    0" +  data[i].Sl_No+"th" +  " November 2018 ";
-					case "9": 
-						document.getElementById("today").innerHTML =  "Today : " + data[i].Day +",   0" +  data[i].Sl_No+"th" +  " November 2018 ";
-						 
-					default :
-						document.getElementById("today").innerHTML =  "Today  : " + data[i].Day + ",  " +  data[i].Sl_No+"th" +  " November 2018 ";
-				}
-				
-// 						document.getElementById("date").innerHTML = "Day : " + data[i].Day ;
-					// 	document.getElementById("suhoor").innerHTML =  "Suhoor Time : " +  data[i].Suhoor;
-// 						document.getElementById("iftar").innerHTML = "Iftar Time  :  " + data[i].Iftar;
-					}
-				}
-		
-	
-	</script>	
-	</div>	
-	</div>	
+              updateClock();
+        
+              document.getElementById("expired").style.visibility="hidden";
+              document.getElementById("clockdiv").style.visibility="visible";
+                if (distance < 0 && now2 > isha_time && newdate == today_date) {
 
-		<div id="footer">
-				<p> <b><u>Duaon ka Taalib : </u><b></p>
-				<p> Md Irshad Ali  <b></p>
-				<p> Technology Analyst </p>
-				<p> Infosys Limited,Bhubaneshwar</p>
-				<p> <b>Mobile :</b> 9804452637</p>
-				<p> <b>Email :</b> mdirshadali96@gmail.com</p>
-		</div>
-	
+                    document.getElementById("expired").style.color = "red";
+                    document.getElementById("expired").style.visibility="visible";
+                    document.getElementById("clockdiv").style.visibility="hidden";
+                }else if (distance < 0 && newdate != today_date){
+                	 document.getElementById("expired").style.color = "red";
+                   	 document.getElementById("expired").style.visibility="visible";
+                   	 document.getElementById("clockdiv").style.visibility="hidden";
+                     setInterval('window.location.reload()', 60000*5);
+                }
+                
+                
+            }, 10);
+            
+            }
+        }
+        
+        function displayImage(image,hadith){
+            var elem = document.createElement("img");
+            elem.setAttribute("src", image);
+            elem.setAttribute("height", "500px");
+            elem.setAttribute("width", "50%");
+            elem.setAttribute("alt", "Rmadan Mubarak");
+            document.getElementById("hadeesRight").appendChild(elem);
+            document.getElementById("hadith").innerHTML = hadith ;
+            document.getElementById("hadith").style.fontSize = "30px" ;
+            document.getElementById("hadith").style.color = "white" ;
+        }
+
+    </script>
+
+
+
+      <p><label><b><u>Namaaz Timetable November 2018 of Bhubaneshwar </u></b></label></p>              
+        <table>
+            <tr class="unselected">
+                <th>Date</th>
+                <th>Day</th>
+                <th>Fazar</th>
+                <th>Sunrise</th>
+                <th>Zohar</th>
+                <th>Asar</th>
+                <th>Sunset</th>
+                <th>Magrib</th>
+                <th>Isha</th>
+            </tr>
+            <script>createtable();</script>
+        </table>
+    
+    <script>
+                for(var i = 0; i< 30; i++){
+                    if(newdate == data[i].Date){
+                    
+                
+                    switch (data[i].Sl_No) {
+                    case "1":
+                        document.getElementById("today").innerHTML =  "Today   : " + data[i].Day + ",   0" +  data[i].Sl_No+"st" +  " November 2018 ";
+                        break; 
+                    case "2": 
+                        document.getElementById("today").innerHTML =  "Today  : " + data[i].Day + ",   0" +  data[i].Sl_No+"nd" +  " November 2018 ";
+                        break; 
+                    case "21": 
+                         document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",   " +  data[i].Sl_No+"st" +  " November 2018 ";
+                        break; 
+                    case "22": 
+                        document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",  " +  data[i].Sl_No+"nd" +  " November 2018";
+                        break; 
+                    case "3": 
+                        document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",  0" +  data[i].Sl_No+"rd" +  " November 2018 ";
+                        break; 
+                    case "23": 
+                        document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",  " +  data[i].Sl_No+"rd" +  " November 2018";
+                        break; 
+                    case "4": 
+                        document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",   0" +  data[i].Sl_No+"th" +  " November 2018 ";
+                    case "5": 
+                        document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",   0" +  data[i].Sl_No+"th" +  " November 2018";
+                    case "6": 
+                        document.getElementById("today").innerHTML =  "Today : " + data[i].Day +",    0" +  data[i].Sl_No+"th" +  " November 2018 ";
+                    case "7": 
+                        document.getElementById("today").innerHTML =  "Today  : " + data[i].Day +",   0" +  data[i].Sl_No+"th" +  " November 2018 ";
+                    case "8": 
+                        document.getElementById("today").innerHTML =  "Today : " + data[i].Day +",    0" +  data[i].Sl_No+"th" +  " November 2018 ";
+                    case "9": 
+                        document.getElementById("today").innerHTML =  "Today : " + data[i].Day +",   0" +  data[i].Sl_No+"th" +  " November 2018 ";
+                         
+                    default :
+                        document.getElementById("today").innerHTML =  "Today  : " + data[i].Day + ",  " +  data[i].Sl_No+"th" +  " November 2018 ";
+                }
+                
+//                      document.getElementById("date").innerHTML = "Day : " + data[i].Day ;
+                    //  document.getElementById("suhoor").innerHTML =  "Suhoor Time : " +  data[i].Suhoor;
+//                      document.getElementById("iftar").innerHTML = "Iftar Time  :  " + data[i].Iftar;
+                    }
+                }
+        
+    
+    </script>   
+    </div>  
+    </div>  
+
+        <div id="footer">
+                <p> <b><u>Duaon ka Taalib : </u><b></p>
+                <p> Md Irshad Ali  <b></p>
+                <p> Technology Analyst </p>
+                <p> Infosys Limited,Bhubaneshwar</p>
+                <p> <b>Mobile :</b> 9804452637</p>
+                <p> <b>Email :</b> mdirshadali96@gmail.com</p>
+        </div>
+    
 </body>
 </html>
 
