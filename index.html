@@ -366,7 +366,7 @@
 					document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Fazar';
 					document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Fazar;
 				}
-				else if(now2 < zohar_time) {
+				else if(now2 > fajar_time && now2 < zohar_time) {
 					var countEndTime = new Date(newdate + ' '+ data[i].Asar).getTime();
 					var countStartTime = new Date(newdate + ' '+ data[i].Zohar).getTime();
 					var countEndTime2 = new Date(newdate + ' '+ data[i].Asar);
@@ -374,14 +374,14 @@
 					document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Zohar';
 					document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Zohar;
 					
-				}else if (now2 < asar_time) {
+				}else if (now2 > zohar_time && now2 < asar_time) {
 					var countEndTime = new Date(newdate + ' '+ data[i].Asar).getTime();
 					var countStartTime = new Date(newdate + ' '+ data[i].Zohar).getTime();
 					var countEndTime2 = new Date(newdate + ' '+ data[i].Asar);
 					
 					document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Asar';
 					document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Asar;
-				}else if (now2 < magrib_time) {
+				}else if (now2 > asar_time && now2 < magrib_time) {
 					var countEndTime = new Date(newdate + ' '+ data[i].Magrib).getTime();
 					var countStartTime = new Date(newdate + ' '+ data[i].Asar).getTime();
 					var countEndTime2 = new Date(newdate + ' '+ data[i].Magrib);
