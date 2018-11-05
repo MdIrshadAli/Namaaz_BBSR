@@ -176,7 +176,7 @@
 		<p></p> 
 		<div id="hadith"></div>
 		<p></p>
-		<font size="5">For more hadith ,Please Click <a href="https://www.soundvision.com/article/the-quran-and-hadith-on-ramadan"><font color="FF0000">here</font></a></font>
+		<font size="5">For more hadith ,Please Click <a href="https://questionsonislam.com/article/hadiths-about-prayer"><font color="FF0000">here</font></a></font>
 	</div>
 	<hr>	
 	<font size="10"><b><u>Pic of the Day</u> </b></font>	
@@ -367,9 +367,9 @@
 					document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Fazar;
 				}
 				else if(now2 > fajar_time && now2 < zohar_time) {
-					var countEndTime = new Date(newdate + ' '+ data[i].Asar).getTime();
-					var countStartTime = new Date(newdate + ' '+ data[i].Zohar).getTime();
-					var countEndTime2 = new Date(newdate + ' '+ data[i].Asar);
+					var countEndTime = new Date(newdate + ' '+ data[i].Zohar).getTime();
+					var countStartTime = new Date(newdate + ' '+ data[i].Fazar).getTime();
+					var countEndTime2 = new Date(newdate + ' '+ data[i].Zohar);
 					
 					document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Zohar';
 					document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Zohar;
