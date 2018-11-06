@@ -4,7 +4,126 @@
 <head>
     <script type="text/javascript" src="timeTable.json"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        
+
+
+
+ <script>
+var xport = {
+  _fallbacktoCSV: true,  
+  toXLS: function(tableId, filename) {   
+    this._filename = (typeof filename == 'undefined') ? tableId : filename;
+    
+    //var ieVersion = this._getMsieVersion();
+    //Fallback to CSV for IE & Edge
+    if ((this._getMsieVersion() || this._isFirefox()) && this._fallbacktoCSV) {
+      return this.toCSV(tableId);
+    } else if (this._getMsieVersion() || this._isFirefox()) {
+      alert("Not supported browser");
+    }
+
+    //Other Browser can download xls
+    var htmltable = document.getElementById(tableId);
+    var html = htmltable.outerHTML;
+
+    this._downloadAnchor("data:application/vnd.ms-excel" + encodeURIComponent(html), 'xls'); 
+  },
+  toCSV: function(tableId, filename) {
+    this._filename = (typeof filename === 'undefined') ? tableId : filename;
+    // Generate our CSV string from out HTML Table
+    var csv = this._tableToCSV(document.getElementById(tableId));
+    // Create a CSV Blob
+    var blob = new Blob([csv], { type: "text/csv" });
+
+    // Determine which approach to take for the download
+    if (navigator.msSaveOrOpenBlob) {
+      // Works for Internet Explorer and Microsoft Edge
+      navigator.msSaveOrOpenBlob(blob, this._filename + ".csv");
+    } else {      
+      this._downloadAnchor(URL.createObjectURL(blob), 'csv');      
+    }
+  },
+  _getMsieVersion: function() {
+    var ua = window.navigator.userAgent;
+
+    var msie = ua.indexOf("MSIE ");
+    if (msie > 0) {
+      // IE 10 or older => return version number
+      return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)), 10);
+    }
+
+    var trident = ua.indexOf("Trident/");
+    if (trident > 0) {
+      // IE 11 => return version number
+      var rv = ua.indexOf("rv:");
+      return parseInt(ua.substring(rv + 3, ua.indexOf(".", rv)), 10);
+    }
+
+    var edge = ua.indexOf("Edge/");
+    if (edge > 0) {
+      // Edge (IE 12+) => return version number
+      return parseInt(ua.substring(edge + 5, ua.indexOf(".", edge)), 10);
+    }
+
+    // other browser
+    return false;
+  },
+  _isFirefox: function(){
+    if (navigator.userAgent.indexOf("Firefox") > 0) {
+      return 1;
+    }
+    
+    return 0;
+  },
+  _downloadAnchor: function(content, ext) {
+      var anchor = document.createElement("a");
+      anchor.style = "display:none !important";
+      anchor.id = "downloadanchor";
+      document.body.appendChild(anchor);
+
+      // If the [download] attribute is supported, try to use it
+      
+      if ("download" in anchor) {
+        anchor.download = this._filename + "." + ext;
+      }
+      anchor.href = content;
+      anchor.click();
+      anchor.remove();
+  },
+  _tableToCSV: function(table) {
+    // We'll be co-opting `slice` to create arrays
+    var slice = Array.prototype.slice;
+
+    return slice
+      .call(table.rows)
+      .map(function(row) {
+        return slice
+          .call(row.cells)
+          .map(function(cell) {
+            return '"t"'.replace("t", cell.textContent);
+          })
+          .join(",");
+      })
+      .join("\r\n");
+  }
+};
+
+ </script>
+  <style> 
+       /* Style buttons */
+.btn {
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: RoyalBlue;
+} 
+ </style> 
         <style> 
 			#myDIV {
 				color: yellow;
@@ -149,12 +268,11 @@
 <body background="ramadan.jpg" height= "100%" width="100%" link="#FFFF00" vlink="#808080" alink="#FF0000">
 <img src="Namaaz_banner.jpg" height= "200px" width="100%">
 
-<div div id="myDIV">
-	<marquee behavior="scroll" scrollamount="10"><p><label><b><font  font-family:"Tahoma">Assalam-o-alaikum, Welcome to my site..<br />Please find below Namaaz Timetabe,Jazakallah Khairan</font></b></label></p></marquee>
-</div>
+	<div div id="myDIV">
+		<marquee behavior="scroll" scrollamount="10"><p><label><b><font  font-family:"Tahoma">Assalam-o-alaikum, Welcome to my site..<br />Please find below Namaaz Timetabe,Jazakallah Khairan</font></b></label></p></marquee>
+	</div>
 	
 	<hr>
-
 
     <div class="wrapper">
         <div class="centre">
@@ -186,7 +304,9 @@
         <div class="topleft"> 
         <b><p id ="today"> </p></b>
         <b><p id ="next_namaaz">  Next Namaaz :</p> </b>
-        <b><p id ="next_namaaz_time">Next Namaaz Time: </p></b>
+        <b><p id ="next_namaaz_strt_time">Next Namaaz Start Time: </p></b>
+        <b><p id ="next_namaaz_jamaet_time">Next Namaaz Jamaet Time: </p></b>
+
 
     </div>
     
@@ -209,37 +329,36 @@
     <hr>    
     <script>
         var text = '[' +        
-         '{ "Sl_No" : "1",  "Date": "Nov 1, 2018" ,     "Day": "Thursday",          "Fazar": "4:33",  "Sunrise": "5:48",    "Zohar": "11:31",   "Asar": "15:36" ,   "Sunset":"17:11",   "Magrib": "17:16" ,     "Isha": "18:28" ,   "pic":"namaaz-day-1.jpeg",         "hadith": " Imam As-Sadiq (peace be upon him) said: One obligatory prayer is better than performing Hajj twenty times, and the performance of one Hajj is better than giving away a house full of gold. "},' +
-         '{ "Sl_No" : "2",  "Date": "Nov 2, 2018" ,     "Day": "Friday",            "Fazar": "4:34",  "Sunrise": "5:49",    "Zohar": "11:31",   "Asar": "15:35" ,   "Sunset":"17:11",   "Magrib": "17:15" ,     "Isha": "18:27" ,   "pic":"namaaz-day-2.jpeg",         "hadith": " The Messenger of Allah (peace be upon him and his progeny) said: For every thing there is a face and the face of your religion is prayers. So see to it that none from amongst you damages and disfigures the face of his religion. "},' +
-         '{ "Sl_No" : "3",  "Date": "Nov 3, 2018" ,     "Day": "Saturday",          "Fazar": "4:34",  "Sunrise": "5:49",    "Zohar": "11:31",   "Asar": "15:35" ,   "Sunset":"17:10",   "Magrib": "17:15" ,     "Isha": "18:27" ,   "pic":"namaaz-day-3.jpeg",         "hadith": " The Messenger of Allah (peace be upon him and his progeny) said: Whenever the time of each prayer arrives, an Angel announces to the people: (O’ People!) Stand up and extinguish, with prayers, the fire which you have set alight for yourselves."},' +
-         '{ "Sl_No" : "4",  "Date": "Nov 4, 2018" ,     "Day": "Sunday",            "Fazar": "4:35",  "Sunrise": "5:50",    "Zohar": "11:31",   "Asar": "15:34" ,   "Sunset":"17:10",   "Magrib": "17:14" ,     "Isha": "18:26" ,   "pic":"namaaz-day-4.jpeg",         "hadith": " The Messenger of Allah (peace be upon him and his progeny) said: The position of prayers with respect to religion is similar to that of the head with respect to the body."},' +
-         '{ "Sl_No" : "5",  "Date": "Nov 5, 2018" ,     "Day": "Monday",            "Fazar": "4:35",  "Sunrise": "5:50",    "Zohar": "11:31",   "Asar": "15:34" ,   "Sunset":"17:10",   "Magrib": "17:14" ,     "Isha": "18:26" ,   "pic":"namaaz-day-5.jpeg",         "hadith": " Hz. Nawfal bin Muawiya (r.a.):  A person who does not perform a prayer on time is like someone whose family and property were removed. Ibn Hibban "},' +
-         '{ "Sl_No" : "6",  "Date": "Nov 6, 2018" ,     "Day": "Tuesday",           "Fazar": "4:36",  "Sunrise": "5:51",    "Zohar": "11:31",   "Asar": "15:33" ,   "Sunset":"17:09",   "Magrib": "17:13" ,     "Isha": "18:26" ,   "pic":"namaaz-day-6.jpeg",         "hadith": " One day, the Messenger of Allah (pbuh) talked about prayers. He said, The prayer of a person who performs five daily prayers without missing will be brightness, evidence and salvation for him on the Day of Judgment. A person who does not perform five daily prayers properly will be together with Qarun (Croesus), Haman, Pharaoh and Ubayy Ibn Khalaf "},' +
-         '{ "Sl_No" : "7",  "Date": "Nov 7, 2018" ,     "Day": "Wednesday",         "Fazar": "4:36",  "Sunrise": "5:51",    "Zohar": "11:31",   "Asar": "15:33" ,   "Sunset":"17:09",   "Magrib": "17:13" ,     "Isha": "18:25" ,   "pic":"namaaz-day-7.jpeg",         "hadith": " The Prophet (pbuh) said: The key to Paradise is prayer, the key to prayer is wudu (ablution)."},' +
-         '{ "Sl_No" : "8",  "Date": "Nov 8, 2018" ,     "Day": "Thursday",          "Fazar": "4:36",  "Sunrise": "5:52",    "Zohar": "11:31",   "Asar": "15:33" ,   "Sunset":"17:08",   "Magrib": "17:12" ,     "Isha": "18:25" ,   "pic":"namaaz-day-8.jpeg",         "hadith": " Once, the Messenger of Allah said to his Companions, Pray as follows O Allah! Do not make anybody among the rebellious and deprived people. Then, he asked, Do you know who is rebellious and deprived? The Companions said, Who? O Messenger of Allah! The Prophet said, He who does not perform prayers! "},' +
-         '{ "Sl_No" : "9",  "Date": "Nov 9, 2018" ,     "Day": "Friday",            "Fazar": "4:37",  "Sunrise": "5:52",    "Zohar": "11:31",   "Asar": "15:32" ,   "Sunset":"17:08",   "Magrib": "17:12" ,     "Isha": "18:25" ,   "pic":"namaaz-day-9.jpeg",         "hadith": " Reported by Hz. Abu Umama (ra), the Prophet states the following:  There is nothing superior to a person who is given by Allah the opportunity to perform a two-rakah prayer giving. As he is busy with praying, goodness and good deeds are poured onto him. "},' +
-         '{ "Sl_No" : "10", "Date": "Nov 10, 2018",     "Day": "Saturday",          "Fazar": "4:37",  "Sunrise": "5:53",    "Zohar": "11:31",   "Asar": "15:32" ,   "Sunset":"17:08",   "Magrib": "17:12" ,     "Isha": "18:25" ,   "pic":"namaaz-day-10.jpeg",        "hadith": " The Messenger of Allah (pbuh) said that Allah stated the following in a sacred hadith: I made it fard for your ummah to perform five daily prayers. And I made a promise to myself: If someone comes to me by paying attention to performing five daily prayers, I will send him to Paradise. I have nothing to say for the one who does pay attention to prayers."},' +
-         '{ "Sl_No" : "11", "Date": "Nov 11, 2018",     "Day": "Sunday",            "Fazar": "4:37",  "Sunrise": "5:53",    "Zohar": "11:31",   "Asar": "15:32" ,   "Sunset":"17:07",   "Magrib": "17:11" ,     "Isha": "18:24" ,   "pic":"namaaz-day-11.jpeg",        "hadith": " While the Messenger of Allah was passing by a grave, he asked, Whose grave is it? The Companions said, It is the grave of such and such person. The Messenger of Allah (pbuh) said, For this person in the grave, to perform a prayer of two-rakahs is better than all of your worldly goods."},' +
-         '{ "Sl_No" : "12", "Date": "Nov 12, 2018",     "Day": "Monday",            "Fazar": "4:37",  "Sunrise": "5:53",    "Zohar": "11:31",   "Asar": "15:31" ,   "Sunset":"17:07",   "Magrib": "17:11" ,     "Isha": "18:24" ,   "pic":"namaaz-day-12.jpeg",        "hadith": " The Messenger of Allah (pbuh) said, When man prostrates upon reciting a verse of prostration, Satan moves away from that place by crying and says, I was destroyed. Man was ordered to prostrate and he did; thus, he deserved Paradise. I was also ordered to prostrate but I avoided prostrating. I deserve hellfire. "},' +
-         '{ "Sl_No" : "13", "Date": "Nov 13, 2018",     "Day": "Tuesday",           "Fazar": "4:39",  "Sunrise": "5:54",    "Zohar": "11:31",   "Asar": "15:31" ,   "Sunset":"17:07",   "Magrib": "17:11" ,     "Isha": "18:24" ,   "pic":"namaaz-day-13.jpeg",        "hadith": " Reported from Hz. Fatima radıyallahu anha: the Prophet (pbuh) said to me, O Fatima! If you want to meet me in the hereafter, increase your prostrations (that is, perform prayers more.)"},' +
-         '{ "Sl_No" : "14", "Date": "Nov 14, 2018",     "Day": "Wednesday",         "Fazar": "4:40",  "Sunrise": "5:56",    "Zohar": "11:32",   "Asar": "15:31" ,   "Sunset":"17:06",   "Magrib": "17:10" ,     "Isha": "18:24" ,   "pic":"namaaz-day-14.jpeg",        "hadith": " Reported from Abdullah bin Qurt (May Allah be pleased with him): The Messenger of Allah (pbuh) said, On the Day of Judgment, a slave will be questioned about his prayers first. If his prayers are good, his other deeds will be good, too. If his prayers are bad, his other deeds will be bad, too."},' +
-         '{ "Sl_No" : "15", "Date": "Nov 15, 2018",     "Day": "Thursday",          "Fazar": "4:40",  "Sunrise": "5:56",    "Zohar": "11:32",   "Asar": "15:31" ,   "Sunset":"17:06",   "Magrib": "17:10" ,     "Isha": "18:23" ,   "pic":"namaaz-day-15.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) said: The example of the five (daily) prayers is like that of a clear-water river flowing in front of your houses in which a person washes himself five times a day – cleansing him from all dirt."},' +
-         '{ "Sl_No" : "16", "Date": "Nov 16, 2018",     "Day": "Friday",            "Fazar": "4:40",  "Sunrise": "5:56",    "Zohar": "11:32",   "Asar": "15:31" ,   "Sunset":"17:06",   "Magrib": "17:10" ,     "Isha": "18:23" ,   "pic":"namaaz-day-16.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) states that Allah, The Exalted has said: I have made the five prayers obligatory upon your Ummah and have made a covenant with Myself that one who maintains his prayers with respect to their timings, I shall place him in Paradise. As for the one, who does not maintain the timings, I have no covenant (with him)."},' +
-         '{ "Sl_No" : "17", "Date": "Nov 17, 2018",     "Day": "Saturday",          "Fazar": "4:40",  "Sunrise": "5:57",    "Zohar": "11:32",   "Asar": "15:31" ,   "Sunset":"17:06",   "Magrib": "17:10" ,     "Isha": "18:23" ,   "pic":"namaaz-day-17.jpeg",        "hadith": " Imam Al-Baqir (peace be upon him) has said: Allah’s remembrance of ‘people who pray’ is greater and superior to their remembrance of Him. Do you not observe that He has said (in the Noble Qur’an): {Remember Me and I shall remember you.}"},' +
-         '{ "Sl_No" : "18", "Date": "Nov 18, 2018",     "Day": "Sunday",            "Fazar": "4:40",  "Sunrise": "5:57",    "Zohar": "11:32",   "Asar": "15:31" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-18.jpeg",        "hadith": " Imam `Ali (peace be upon him) said: When a person stands up for prayers, Iblis approaches him and looks at him with envy and jealousy, as he sees the Mercy of Allah encompassing the person."},' +
-         '{ "Sl_No" : "19", "Date": "Nov 19, 2018",     "Day": "Monday",            "Fazar": "4:42",  "Sunrise": "5:57",    "Zohar": "11:33",   "Asar": "15:31" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-19.jpeg",        "hadith": " Imam As-Sadiq (peace be upon him) has said: When a person maintains his prayer and offers it at its stipulated time, it ascends in the form of a pure white light and calls out to him: You have guarded me, may Allah protect you. But if he does not maintain his prayer and does not offer it at its decreed time, it ascends as a dark and gloomy form and says to him: You have destroyed me, may Allah destroy you."},' +
-         '{ "Sl_No" : "20", "Date": "Nov 20, 2018",     "Day": "Tuesday",           "Fazar": "4:42",  "Sunrise": "5:59",    "Zohar": "11:33",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-20.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) has said: The most beloved of deeds in the eyes of Allah are: offering prayers at the stipulated times; (then) goodness and kindness towards parents; (and then) Jihad in the way of Allah."},' +
-         '{ "Sl_No" : "21", "Date": "Nov 21, 2018",     "Day": "Wednesday",         "Fazar": "4:42",  "Sunrise": "5:59",    "Zohar": "11:33",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-21.jpeg",        "hadith": " The Noble Prophet (peace be upon him and his progeny) has said: If a person abandons his prayer such that he neither desires its rewards nor fears its chastisement, for such a person I do not care if he dies a Jew, a Christian or a Magian."},' +
-         '{ "Sl_No" : "22", "Date": "Nov 22, 2018",     "Day": "Thursday",          "Fazar": "4:42",  "Sunrise": "5:59",    "Zohar": "11:33",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-22.jpeg",        "hadith": " The Noble Prophet (peace be upon him and his progeny) has said: The good deeds of one who, without any appropriate excuse does not offer his prayer until its time passes away, are annulled. He then said: The divide between a believer and disbelief is the abandonment of prayers."},' +
-         '{ "Sl_No" : "23", "Date": "Nov 23, 2018",     "Day": "Friday",            "Fazar": "4:44",  "Sunrise": "5:59",    "Zohar": "11:33",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-23.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) has said: One who considers the prayers to be insignificant and trivial is not from me. By Allah! He shall never come close to me at the pool of Kauthar."},' +
-         '{ "Sl_No" : "24", "Date": "Nov 24, 2018",     "Day": "Saturday",          "Fazar": "4:44",  "Sunrise": "6:01",    "Zohar": "11:34",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-24.jpeg",        "hadith": " Imam As-Sadiq (peace be upon him) said: Our intercession shall never reach one who considers his prayers to be inconsequential and unimportant."},' +
-         '{ "Sl_No" : "25", "Date": "Nov 25, 2018",     "Day": "Sunday",            "Fazar": "4:44",  "Sunrise": "6:01",    "Zohar": "11:34",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-25.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) has said: Do not destroy your prayers for verily one who destroys his prayers shall be resurrected in the company of Qarun, Haman and Fir`awn."},' +
-         '{ "Sl_No" : "26", "Date": "Nov 26, 2018",     "Day": "Monday",            "Fazar": "4:44",  "Sunrise": "6:01",    "Zohar": "11:34",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-26.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) has said: Prayer is the pillar of your religion and one who intentionally forsakes his prayer has destroyed his religion. And one who does not guard the times of the prayers, shall be made to enter ‘Wayl’, which is a valley in Hell"},' +
-         '{ "Sl_No" : "27", "Date": "Nov 27, 2018",     "Day": "Tuesday",           "Fazar": "4:46",  "Sunrise": "6:03",    "Zohar": "11:35",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-27.jpeg",        "hadith": " The Noble Prophet (peace be upon him and his progeny) has said: The name of one who forsakes his prayer intentionally is written upon The door of Hell from which he shall (eventually) enter."},' +
-         '{ "Sl_No" : "28", "Date": "Nov 28, 2018",     "Day": "Wednesday",         "Fazar": "4:46",  "Sunrise": "6:03",    "Zohar": "11:35",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-28.jpeg",        "hadith": " Imam Al-Baqir (peace be upon him) narrates: One day the Messenger of Allah (peace be upon him and his progeny) was seated in the mosque when a person entered and began praying, but in a manner such that neither did he perform his ruku’ (bowing), nor his sujood (prostration) in a correct manner. Observing this, the Messenger of Allah commented: (This person) pecks as a crow pecks. Should he die and the state of his prayers be as they are now, he shall surely not die upon my religion."},' +
-         '{ "Sl_No" : "29", "Date": "Nov 29, 2018",     "Day": "Friday",            "Fazar": "4:46",  "Sunrise": "6:03",    "Zohar": "11:35",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-29.jpeg",        "hadith": " Narrated Abu Huraira Rasulullah (SAW) said: The angels keep on asking Allah s forgiveness for anyone of you, as long as he is at his Mu’salla (praying place) and he does not pass wind (Hadath). They say, O Allah! Forgive him, O Allah! be Merciful to him. "},' +
-         '{ "Sl_No" : "30", "Date": "Nov 30, 2018",     "Day": "Monday",            "Fazar": "4:47",  "Sunrise": "6:05",    "Zohar": "11:36",   "Asar": "15:30" ,   "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:24" ,   "pic":"namaaz-day-30.jpeg",        "hadith": " Narrated Abu Hurairah (RA) Rasulullah (SAW) said:Allah will prepare for him who goes to the mosque in the morning and in the afternoon (for the congregational prayer) an honorable place in Paradise with good hospitality for (what he has done) every morning and afternoon goings."}]';
-    
+         '{ "Sl_No" : "1",  "Date": "Nov 1, 2018" ,     "Day": "Thursday",          "Fazar": "4:33",  "Sunrise": "5:48",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:36" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:11",   "Magrib": "17:16" ,     "Isha": "18:28" ,   "pic":"namaaz-day-1.jpeg",         "hadith": " Imam As-Sadiq (peace be upon him) said: One obligatory prayer is better than performing Hajj twenty times, and the performance of one Hajj is better than giving away a house full of gold. "},' +
+         '{ "Sl_No" : "2",  "Date": "Nov 2, 2018" ,     "Day": "Friday",            "Fazar": "4:34",  "Sunrise": "5:49",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:35" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:11",   "Magrib": "17:15" ,     "Isha": "18:27" ,   "pic":"namaaz-day-2.jpeg",         "hadith": " The Messenger of Allah (peace be upon him and his progeny) said: For every thing there is a face and the face of your religion is prayers. So see to it that none from amongst you damages and disfigures the face of his religion. "},' +
+         '{ "Sl_No" : "3",  "Date": "Nov 3, 2018" ,     "Day": "Saturday",          "Fazar": "4:34",  "Sunrise": "5:49",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:35" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:10",   "Magrib": "17:15" ,     "Isha": "18:27" ,   "pic":"namaaz-day-3.jpeg",         "hadith": " The Messenger of Allah (peace be upon him and his progeny) said: Whenever the time of each prayer arrives, an Angel announces to the people: (O’ People!) Stand up and extinguish, with prayers, the fire which you have set alight for yourselves."},' +
+         '{ "Sl_No" : "4",  "Date": "Nov 4, 2018" ,     "Day": "Sunday",            "Fazar": "4:35",  "Sunrise": "5:50",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:34" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:10",   "Magrib": "17:14" ,     "Isha": "18:26" ,   "pic":"namaaz-day-4.jpeg",         "hadith": " The Messenger of Allah (peace be upon him and his progeny) said: The position of prayers with respect to religion is similar to that of the head with respect to the body."},' +
+         '{ "Sl_No" : "5",  "Date": "Nov 5, 2018" ,     "Day": "Monday",            "Fazar": "4:35",  "Sunrise": "5:50",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:34" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:10",   "Magrib": "17:14" ,     "Isha": "18:26" ,   "pic":"namaaz-day-5.jpeg",         "hadith": " Hz. Nawfal bin Muawiya (r.a.):  A person who does not perform a prayer on time is like someone whose family and property were removed. Ibn Hibban "},' +
+         '{ "Sl_No" : "6",  "Date": "Nov 6, 2018" ,     "Day": "Tuesday",           "Fazar": "4:36",  "Sunrise": "5:51",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:33" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:09",   "Magrib": "17:13" ,     "Isha": "18:26" ,   "pic":"namaaz-day-6.jpeg",         "hadith": " One day, the Messenger of Allah (pbuh) talked about prayers. He said, The prayer of a person who performs five daily prayers without missing will be brightness, evidence and salvation for him on the Day of Judgment. A person who does not perform five daily prayers properly will be together with Qarun (Croesus), Haman, Pharaoh and Ubayy Ibn Khalaf "},' +
+         '{ "Sl_No" : "7",  "Date": "Nov 7, 2018" ,     "Day": "Wednesday",         "Fazar": "4:36",  "Sunrise": "5:51",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:33" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:09",   "Magrib": "17:13" ,     "Isha": "18:25" ,   "pic":"namaaz-day-7.jpeg",         "hadith": " The Prophet (pbuh) said: The key to Paradise is prayer, the key to prayer is wudu (ablution)."},' +
+         '{ "Sl_No" : "8",  "Date": "Nov 8, 2018" ,     "Day": "Thursday",          "Fazar": "4:36",  "Sunrise": "5:52",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:33" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:08",   "Magrib": "17:12" ,     "Isha": "18:25" ,   "pic":"namaaz-day-8.jpeg",         "hadith": " Once, the Messenger of Allah said to his Companions, Pray as follows O Allah! Do not make anybody among the rebellious and deprived people. Then, he asked, Do you know who is rebellious and deprived? The Companions said, Who? O Messenger of Allah! The Prophet said, He who does not perform prayers! "},' +
+         '{ "Sl_No" : "9",  "Date": "Nov 9, 2018" ,     "Day": "Friday",            "Fazar": "4:37",  "Sunrise": "5:52",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:32" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:08",   "Magrib": "17:12" ,     "Isha": "18:25" ,   "pic":"namaaz-day-9.jpeg",         "hadith": " Reported by Hz. Abu Umama (ra), the Prophet states the following:  There is nothing superior to a person who is given by Allah the opportunity to perform a two-rakah prayer giving. As he is busy with praying, goodness and good deeds are poured onto him. "},' +
+         '{ "Sl_No" : "10", "Date": "Nov 10, 2018",     "Day": "Saturday",          "Fazar": "4:37",  "Sunrise": "5:53",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:32" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:08",   "Magrib": "17:12" ,     "Isha": "18:25" ,   "pic":"namaaz-day-10.jpeg",        "hadith": " The Messenger of Allah (pbuh) said that Allah stated the following in a sacred hadith: I made it fard for your ummah to perform five daily prayers. And I made a promise to myself: If someone comes to me by paying attention to performing five daily prayers, I will send him to Paradise. I have nothing to say for the one who does pay attention to prayers."},' +
+         '{ "Sl_No" : "11", "Date": "Nov 11, 2018",     "Day": "Sunday",            "Fazar": "4:37",  "Sunrise": "5:53",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:32" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:07",   "Magrib": "17:11" ,     "Isha": "18:24" ,   "pic":"namaaz-day-11.jpeg",        "hadith": " While the Messenger of Allah was passing by a grave, he asked, Whose grave is it? The Companions said, It is the grave of such and such person. The Messenger of Allah (pbuh) said, For this person in the grave, to perform a prayer of two-rakahs is better than all of your worldly goods."},' +
+         '{ "Sl_No" : "12", "Date": "Nov 12, 2018",     "Day": "Monday",            "Fazar": "4:37",  "Sunrise": "5:53",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:31" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:07",   "Magrib": "17:11" ,     "Isha": "18:24" ,   "pic":"namaaz-day-12.jpeg",        "hadith": " The Messenger of Allah (pbuh) said, When man prostrates upon reciting a verse of prostration, Satan moves away from that place by crying and says, I was destroyed. Man was ordered to prostrate and he did; thus, he deserved Paradise. I was also ordered to prostrate but I avoided prostrating. I deserve hellfire. "},' +
+         '{ "Sl_No" : "13", "Date": "Nov 13, 2018",     "Day": "Tuesday",           "Fazar": "4:39",  "Sunrise": "5:54",    "Zohar": "11:31",  "Zohar_Namaaz": "13:45",   "Asar": "15:31" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:07",   "Magrib": "17:11" ,     "Isha": "18:24" ,   "pic":"namaaz-day-13.jpeg",        "hadith": " Reported from Hz. Fatima radıyallahu anha: the Prophet (pbuh) said to me, O Fatima! If you want to meet me in the hereafter, increase your prostrations (that is, perform prayers more.)"},' +
+         '{ "Sl_No" : "14", "Date": "Nov 14, 2018",     "Day": "Wednesday",         "Fazar": "4:40",  "Sunrise": "5:56",    "Zohar": "11:32",  "Zohar_Namaaz": "13:45",   "Asar": "15:31" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:06",   "Magrib": "17:10" ,     "Isha": "18:24" ,   "pic":"namaaz-day-14.jpeg",        "hadith": " Reported from Abdullah bin Qurt (May Allah be pleased with him): The Messenger of Allah (pbuh) said, On the Day of Judgment, a slave will be questioned about his prayers first. If his prayers are good, his other deeds will be good, too. If his prayers are bad, his other deeds will be bad, too."},' +
+         '{ "Sl_No" : "15", "Date": "Nov 15, 2018",     "Day": "Thursday",          "Fazar": "4:40",  "Sunrise": "5:56",    "Zohar": "11:32",  "Zohar_Namaaz": "13:45",   "Asar": "15:31" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:06",   "Magrib": "17:10" ,     "Isha": "18:23" ,   "pic":"namaaz-day-15.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) said: The example of the five (daily) prayers is like that of a clear-water river flowing in front of your houses in which a person washes himself five times a day – cleansing him from all dirt."},' +
+         '{ "Sl_No" : "16", "Date": "Nov 16, 2018",     "Day": "Friday",            "Fazar": "4:40",  "Sunrise": "5:56",    "Zohar": "11:32",  "Zohar_Namaaz": "13:45",   "Asar": "15:31" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:06",   "Magrib": "17:10" ,     "Isha": "18:23" ,   "pic":"namaaz-day-16.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) states that Allah, The Exalted has said: I have made the five prayers obligatory upon your Ummah and have made a covenant with Myself that one who maintains his prayers with respect to their timings, I shall place him in Paradise. As for the one, who does not maintain the timings, I have no covenant (with him)."},' +
+         '{ "Sl_No" : "17", "Date": "Nov 17, 2018",     "Day": "Saturday",          "Fazar": "4:40",  "Sunrise": "5:57",    "Zohar": "11:32",  "Zohar_Namaaz": "13:45",   "Asar": "15:31" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:06",   "Magrib": "17:10" ,     "Isha": "18:23" ,   "pic":"namaaz-day-17.jpeg",        "hadith": " Imam Al-Baqir (peace be upon him) has said: Allah’s remembrance of ‘people who pray’ is greater and superior to their remembrance of Him. Do you not observe that He has said (in the Noble Qur’an): {Remember Me and I shall remember you.}"},' +
+         '{ "Sl_No" : "18", "Date": "Nov 18, 2018",     "Day": "Sunday",            "Fazar": "4:40",  "Sunrise": "5:57",    "Zohar": "11:32",  "Zohar_Namaaz": "13:45",   "Asar": "15:31" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-18.jpeg",        "hadith": " Imam `Ali (peace be upon him) said: When a person stands up for prayers, Iblis approaches him and looks at him with envy and jealousy, as he sees the Mercy of Allah encompassing the person."},' +
+         '{ "Sl_No" : "19", "Date": "Nov 19, 2018",     "Day": "Monday",            "Fazar": "4:42",  "Sunrise": "5:57",    "Zohar": "11:33",  "Zohar_Namaaz": "13:45",   "Asar": "15:31" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-19.jpeg",        "hadith": " Imam As-Sadiq (peace be upon him) has said: When a person maintains his prayer and offers it at its stipulated time, it ascends in the form of a pure white light and calls out to him: You have guarded me, may Allah protect you. But if he does not maintain his prayer and does not offer it at its decreed time, it ascends as a dark and gloomy form and says to him: You have destroyed me, may Allah destroy you."},' +
+         '{ "Sl_No" : "20", "Date": "Nov 20, 2018",     "Day": "Tuesday",           "Fazar": "4:42",  "Sunrise": "5:59",    "Zohar": "11:33",  "Zohar_Namaaz": "13:45",   "Asar": "15:30" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-20.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) has said: The most beloved of deeds in the eyes of Allah are: offering prayers at the stipulated times; (then) goodness and kindness towards parents; (and then) Jihad in the way of Allah."},' +
+         '{ "Sl_No" : "21", "Date": "Nov 21, 2018",     "Day": "Wednesday",         "Fazar": "4:42",  "Sunrise": "5:59",    "Zohar": "11:33",  "Zohar_Namaaz": "13:45",   "Asar": "15:30" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-21.jpeg",        "hadith": " The Noble Prophet (peace be upon him and his progeny) has said: If a person abandons his prayer such that he neither desires its rewards nor fears its chastisement, for such a person I do not care if he dies a Jew, a Christian or a Magian."},' +
+         '{ "Sl_No" : "22", "Date": "Nov 22, 2018",     "Day": "Thursday",          "Fazar": "4:42",  "Sunrise": "5:59",    "Zohar": "11:33",  "Zohar_Namaaz": "13:45",   "Asar": "15:30" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-22.jpeg",        "hadith": " The Noble Prophet (peace be upon him and his progeny) has said: The good deeds of one who, without any appropriate excuse does not offer his prayer until its time passes away, are annulled. He then said: The divide between a believer and disbelief is the abandonment of prayers."},' +
+         '{ "Sl_No" : "23", "Date": "Nov 23, 2018",     "Day": "Friday",            "Fazar": "4:44",  "Sunrise": "5:59",    "Zohar": "11:33",  "Zohar_Namaaz": "13:45",   "Asar": "15:30" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-23.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) has said: One who considers the prayers to be insignificant and trivial is not from me. By Allah! He shall never come close to me at the pool of Kauthar."},' +
+         '{ "Sl_No" : "24", "Date": "Nov 24, 2018",     "Day": "Saturday",          "Fazar": "4:44",  "Sunrise": "6:01",    "Zohar": "11:34",  "Zohar_Namaaz": "13:45",   "Asar": "15:30" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-24.jpeg",        "hadith": " Imam As-Sadiq (peace be upon him) said: Our intercession shall never reach one who considers his prayers to be inconsequential and unimportant."},' +
+         '{ "Sl_No" : "25", "Date": "Nov 25, 2018",     "Day": "Sunday",            "Fazar": "4:44",  "Sunrise": "6:01",    "Zohar": "11:34",  "Zohar_Namaaz": "13:45",   "Asar": "15:30" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-25.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) has said: Do not destroy your prayers for verily one who destroys his prayers shall be resurrected in the company of Qarun, Haman and Fir`awn."},' +
+         '{ "Sl_No" : "26", "Date": "Nov 26, 2018",     "Day": "Monday",            "Fazar": "4:44",  "Sunrise": "6:01",    "Zohar": "11:34",  "Zohar_Namaaz": "13:45",   "Asar": "15:30" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-26.jpeg",        "hadith": " The Messenger of Allah (peace be upon him and his progeny) has said: Prayer is the pillar of your religion and one who intentionally forsakes his prayer has destroyed his religion. And one who does not guard the times of the prayers, shall be made to enter ‘Wayl’, which is a valley in Hell"},' +
+         '{ "Sl_No" : "27", "Date": "Nov 27, 2018",     "Day": "Tuesday",           "Fazar": "4:46",  "Sunrise": "6:03",    "Zohar": "11:35",  "Zohar_Namaaz": "13:45",   "Asar": "15:30" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-27.jpeg",        "hadith": " The Noble Prophet (peace be upon him and his progeny) has said: The name of one who forsakes his prayer intentionally is written upon The door of Hell from which he shall (eventually) enter."},' +
+         '{ "Sl_No" : "28", "Date": "Nov 28, 2018",     "Day": "Wednesday",         "Fazar": "4:46",  "Sunrise": "6:03",    "Zohar": "11:35",  "Zohar_Namaaz": "13:45",   "Asar": "15:30" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-28.jpeg",        "hadith": " Imam Al-Baqir (peace be upon him) narrates: One day the Messenger of Allah (peace be upon him and his progeny) was seated in the mosque when a person entered and began praying, but in a manner such that neither did he perform his ruku’ (bowing), nor his sujood (prostration) in a correct manner. Observing this, the Messenger of Allah commented: (This person) pecks as a crow pecks. Should he die and the state of his prayers be as they are now, he shall surely not die upon my religion."},' +
+         '{ "Sl_No" : "29", "Date": "Nov 29, 2018",     "Day": "Friday",            "Fazar": "4:46",  "Sunrise": "6:03",    "Zohar": "11:35",  "Zohar_Namaaz": "13:45",   "Asar": "15:30" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:23" ,   "pic":"namaaz-day-29.jpeg",        "hadith": " Narrated Abu Huraira Rasulullah (SAW) said: The angels keep on asking Allah s forgiveness for anyone of you, as long as he is at his Mu’salla (praying place) and he does not pass wind (Hadath). They say, O Allah! Forgive him, O Allah! be Merciful to him. "},' +
+         '{ "Sl_No" : "30", "Date": "Nov 30, 2018",     "Day": "Monday",            "Fazar": "4:47",  "Sunrise": "6:05",    "Zohar": "11:36",  "Zohar_Namaaz": "13:45",   "Asar": "15:30" ,   "Asar_Namaaz": "16:00",  "Sunset":"17:05",   "Magrib": "17:09" ,     "Isha": "18:24" ,   "pic":"namaaz-day-30.jpeg",        "hadith": " Narrated Abu Hurairah (RA) Rasulullah (SAW) said:Allah will prepare for him who goes to the mosque in the morning and in the afternoon (for the congregational prayer) an honorable place in Paradise with good hospitality for (what he has done) every morning and afternoon goings."}]';
          data = JSON.parse(text);
         
         var dateObj = new Date();
@@ -388,7 +507,9 @@
                     var countEndTime2 = new Date(newdate + ' '+ data[i].Sunrise);
                     
                     document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Fazar';
-                    document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Fazar;
+                    document.getElementById("next_namaaz_strt_time").innerHTML =  "Next Namaaz Time   : " + data[i].Fazar;
+                    document.getElementById("next_namaaz_jamaet_time").style.visibility="hidden";
+
                 }
                 else if(now2 > fajar_time && now2 < zohar_time) {
                     var countEndTime = new Date(newdate + ' '+ data[i].Zohar).getTime();
@@ -396,7 +517,9 @@
                     var countEndTime2 = new Date(newdate + ' '+ data[i].Zohar);
                     
                     document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Zohar';
-                    document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Zohar;
+                    document.getElementById("next_namaaz_strt_time").innerHTML =  "Next Namaaz Start Time   : " + data[i].Zohar;
+                    document.getElementById("next_namaaz_jamaet_time").innerHTML =  "Next Namaaz Jamaet Time   : " + data[i].Zohar_Namaaz;
+
                     
                 }else if (now2 > zohar_time && now2 < asar_time) {
                     var countEndTime = new Date(newdate + ' '+ data[i].Asar).getTime();
@@ -404,14 +527,17 @@
                     var countEndTime2 = new Date(newdate + ' '+ data[i].Asar);
                     
                     document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Asar';
-                    document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Asar;
+                    document.getElementById("next_namaaz_strt_time").innerHTML =  "Next Namaaz Start Time   : " + data[i].Asar;
+                   document.getElementById("next_namaaz_jamaet_time").innerHTML =  "Next Namaaz Jamaet Time   : " + data[i].Asar_Namaaz;
+
                 }else if (now2 > asar_time && now2 < magrib_time) {
                     var countEndTime = new Date(newdate + ' '+ data[i].Magrib).getTime();
                     var countStartTime = new Date(newdate + ' '+ data[i].Asar).getTime();
                     var countEndTime2 = new Date(newdate + ' '+ data[i].Magrib);
                     
                     document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Magrib';
-                    document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Magrib;
+                    document.getElementById("next_namaaz_strt_time").innerHTML =  "Next Namaaz Start Time   : " + data[i].Magrib;
+                    document.getElementById("next_namaaz_jamaet_time").innerHTML =  "Next Namaaz Jamaet Time   : " + data[i].Magrib;
                     
                 } else  if (now2 < isha_time && newdate == today_date){
                     var countEndTime = new Date(newdate + ' '+ data[i].Isha).getTime();
@@ -419,14 +545,15 @@
                     var countEndTime2 = new Date(newdate + ' '+ data[i].Isha);
                     
                     document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Isha';
-                    document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i].Isha;
+                    document.getElementById("next_namaaz_strt_time").innerHTML =  "Next Namaaz Time   : " + data[i].Isha;
+                    document.getElementById("next_namaaz_jamaet_time").style.visibility="hidden";
                 
                 }else{
                     document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Fazar';
-                    document.getElementById("next_namaaz_time").innerHTML =  "Next Namaaz Time   : " + data[i+1].Fazar;
+                    document.getElementById("next_namaaz_strt_time").innerHTML =  "Next Namaaz Time   : " + data[i+1].Fazar;
+                    document.getElementById("next_namaaz_jamaet_time").style.visibility="hidden";
                 }
-                
-                setInterval('window.location.reload()', 60000*1);
+                 setInterval('window.location.reload()', 60000*1);
 
                 var today_date =data[i].Date;
 
@@ -499,7 +626,7 @@
 
 
       <p><label><b><u>Namaaz Timetable November 2018 of Bhubaneshwar </u></b></label></p>              
-        <table>
+        <table id="Namaaz_Time_table">
             <tr class="unselected">
                 <th>Date</th>
                 <th>Day</th>
@@ -513,7 +640,11 @@
             </tr>
             <script>createtable();</script>
         </table>
-    
+    <div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+				<button class="btn"  id="btnExport" style="width:100%" onclick="javascript:xport.toCSV('Namaaz_Time_table');"> <label><b><i class="fa fa-download"></i>Export to excel</b></label></button> 
+
+			</div>
     <script>
                 for(var i = 0; i< 30; i++){
                     if(newdate == data[i].Date){
