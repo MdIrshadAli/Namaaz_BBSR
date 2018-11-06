@@ -596,6 +596,7 @@ var xport = {
                     document.getElementById("expired").style.color = "red";
                     document.getElementById("expired").style.visibility="visible";
                     document.getElementById("clockdiv").style.visibility="hidden";
+                    setInterval('window.location.reload()', 60000*5);
                 }else if (distance < 0 && newdate != today_date){
                      document.getElementById("expired").style.color = "red";
                      document.getElementById("expired").style.visibility="visible";
@@ -642,7 +643,7 @@ var xport = {
         </table>
     <div>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-				<button class="btn"  id="btnExport" style="width:100%" onclick="javascript:xport.toCSV('Namaaz_Time_table');"> <label><b><i class="fa fa-download"></i>Export to excel</b></label></button> 
+				<button class="btn"  id="btnExport" style="width:100%" onclick="javascript:xport.toCSV('Namaaz_Time_table');"> <label><b><i class="fa fa-download"></i>    Download to excel</b></label></button> 
 
 			</div>
     <script>
