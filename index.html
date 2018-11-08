@@ -493,6 +493,7 @@ var xport = {
                 var dateObj = new Date();
                 var month = dateObj.getUTCMonth() + 1; //months from 1-12
                 var day = dateObj.getUTCDate();
+                var day2 = day+1;
                 var year = dateObj.getUTCFullYear();
                 if (month == 11){
                     month = 'Nov';
@@ -501,6 +502,7 @@ var xport = {
                 }
                 var newdate = month + " " + day + ", "+ year;
 
+                var newdate2 = month + " " + day2 + ", "+ year;
                 var today_date =data[i].Date;
 
                 if (now2 < fajar_time) {
@@ -550,7 +552,11 @@ var xport = {
                     document.getElementById("next_namaaz_strt_time").innerHTML =  "Next Namaaz Time   : " + data[i].Isha;
                     document.getElementById("next_namaaz_jamaet_time").style.visibility="hidden";
                 
-                }else{
+                }else {
+                
+               		var countEndTime = new Date(newdate2 + ' '+  data[i+1].Fazar).getTime();
+                    var countStartTime = new Date(newdate + ' '+ data[i].Isha).getTime();
+                    var countEndTime2 = new Date(newdate2 + ' '+  data[i+1].Fazar);
                     document.getElementById("next_namaaz").innerHTML =  "Next Namaaz   : " + 'Fazar';
                     document.getElementById("next_namaaz_strt_time").innerHTML =  "Next Namaaz Time   : " + data[i+1].Fazar;
                     document.getElementById("next_namaaz_jamaet_time").style.visibility="hidden";
@@ -592,17 +598,19 @@ var xport = {
         
               document.getElementById("expired").style.visibility="hidden";
               document.getElementById("clockdiv").style.visibility="visible";
-                if (distance < 0 && now2 > isha_time && newdate == today_date) {
+                if ((distance < 0 && now2 > isha_time && newdate == today_date) || isNaN(distance) ) {
 
-                    document.getElementById("expired").style.color = "red";
-                    document.getElementById("expired").style.visibility="visible";
-                    document.getElementById("clockdiv").style.visibility="hidden";
+                   //  document.getElementById("expired").style.color = "red";
+//                     document.getElementById("expired").style.visibility="visible";
+//                     document.getElementById("clockdiv").style.visibility="hidden";
                     setInterval('window.location.reload()', 60000*5);
-                }else if (distance < 0 && newdate != today_date){
+                }else if ((distance < 0 && newdate != today_date)  || OisNaN(distance)){
                      document.getElementById("expired").style.color = "red";
                      document.getElementById("expired").style.visibility="visible";
                      document.getElementById("clockdiv").style.visibility="hidden";
                      setInterval('window.location.reload()', 60000*5);
+                }else if (distance < 0 ){
+                setInterval('window.location.reload()', 60000*1);
                 }
                 
                 
